@@ -38,9 +38,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole('super_admin') ? true : null;
         });
 
-        if (env('APP_ENV') === 'production') {
-            URL::forceScheme('https');
-        }
+        // if (env('APP_ENV') === 'production') {
+        //     URL::forceScheme('https');
+        // }
     }
 
     /**
@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn (): ?Password => app()->isProduction()
+            fn(): ?Password => app()->isProduction()
             ? Password::min(12)
                 ->mixedCase()
                 ->letters()
