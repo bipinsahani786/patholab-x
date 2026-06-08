@@ -702,3 +702,107 @@ html.app-skin-dark .card {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(67, 24, 255, 0.3) !important;
 }
+
+/* ========================================= */
+/* GLOBAL UI OVERRIDES: PREMIUM TABLE & PAGINATION */
+/* ========================================= */
+
+/* GLOBAL MODERN TABLE REDESIGN */
+.table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+    color: #334155 !important;
+}
+
+.table > thead,
+.table > thead > tr,
+.table > thead > tr > th {
+    background-color: #f8fafc !important; /* Premium light gray header */
+    border: none !important;
+}
+
+.table > thead > tr > th {
+    color: #64748b !important; /* Slate color for text */
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 14px 20px !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
+/* Row styling */
+.table > tbody > tr {
+    background-color: #ffffff !important;
+    transition: all 0.2s ease !important;
+}
+
+.table > tbody > tr > td {
+    color: #0f172a !important; /* Strong dark text */
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    padding: 16px 20px !important;
+    vertical-align: middle !important;
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important; /* Slightly darker border for contrast */
+}
+
+/* Hover state */
+.table > tbody > tr:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Remove vertical borders from all table elements to avoid weird gaps */
+.table th, .table td {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* GLOBAL PAGINATION REDESIGN */
+.pagination {
+    display: flex !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+    gap: 4px !important;
+    margin-bottom: 0 !important;
+    justify-content: flex-end;
+}
+
+.page-item .page-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 2px !important; /* Sharp boxy corners */
+    transition: all 0.2s ease !important;
+    min-width: 32px !important;
+    height: 32px !important;
+}
+
+.page-item .page-link:hover {
+    color: #2563eb !important;
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    text-decoration: none !important;
+}
+
+.page-item.active .page-link {
+    z-index: 3 !important;
+    color: #ffffff !important;
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+    box-shadow: 0 2px 4px rgba(var(--bs-primary-rgb), 0.2) !important;
+}
+
+.page-item.disabled .page-link {
+    color: #94a3b8 !important;
+    pointer-events: none !important;
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}

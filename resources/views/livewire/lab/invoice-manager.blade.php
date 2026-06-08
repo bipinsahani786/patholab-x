@@ -42,63 +42,63 @@
         }
         .action-btn-warning {
             color: #d97706 !important;
-            background-color: #fef3c7 !important;
+            background-color: #fffbeb !important;
             border-color: #fde68a !important;
         }
         .action-btn-warning:hover {
             color: #ffffff !important;
-            background-color: #d97706 !important;
-            border-color: #d97706 !important;
+            background-color: #f59e0b !important;
+            border-color: #f59e0b !important;
         }
         .action-btn-info {
-            color: #0891b2 !important;
-            background-color: #ecfeff !important;
-            border-color: #cffafe !important;
+            color: #0284c7 !important;
+            background-color: #f0f9ff !important;
+            border-color: #bae6fd !important;
         }
         .action-btn-info:hover {
             color: #ffffff !important;
-            background-color: #0891b2 !important;
-            border-color: #0891b2 !important;
+            background-color: #0ea5e9 !important;
+            border-color: #0ea5e9 !important;
         }
         .action-btn-success {
-            color: #16a34a !important;
-            background-color: #f0fdf4 !important;
-            border-color: #bbf7d0 !important;
+            color: #059669 !important;
+            background-color: #ecfdf5 !important;
+            border-color: #a7f3d0 !important;
         }
         .action-btn-success:hover {
             color: #ffffff !important;
-            background-color: #16a34a !important;
-            border-color: #16a34a !important;
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
         }
         .action-btn-whatsapp {
-            color: #128c7e !important;
-            background-color: #e8f9ee !important;
-            border-color: #c3f2d2 !important;
+            color: #15803d !important;
+            background-color: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
         }
         .action-btn-whatsapp:hover {
             color: #ffffff !important;
-            background-color: #128c7e !important;
-            border-color: #128c7e !important;
+            background-color: #22c55e !important;
+            border-color: #22c55e !important;
         }
         .action-btn-primary {
-            color: #2563eb !important;
-            background-color: #eff6ff !important;
-            border-color: #bfdbfe !important;
+            color: #4318ff !important;
+            background-color: #f0f4ff !important;
+            border-color: #c7d2ff !important;
         }
         .action-btn-primary:hover {
             color: #ffffff !important;
-            background-color: #2563eb !important;
-            border-color: #2563eb !important;
+            background-color: #4318ff !important;
+            border-color: #4318ff !important;
         }
         .action-btn-danger {
             color: #dc2626 !important;
             background-color: #fef2f2 !important;
-            border-color: #fee2e2 !important;
+            border-color: #fecaca !important;
         }
         .action-btn-danger:hover {
             color: #ffffff !important;
-            background-color: #dc2626 !important;
-            border-color: #dc2626 !important;
+            background-color: #ef4444 !important;
+            border-color: #ef4444 !important;
         }
         .action-btn.dropdown-toggle::after {
             display: none !important;
@@ -138,25 +138,6 @@
             font-size: 24px;
         }
 
-        /* Table Overrides */
-        .table-custom th {
-            background-color: #f1f5f9 !important;
-            color: #475569;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            padding: 14px 16px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .table-custom td {
-            vertical-align: middle;
-            padding: 16px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .table-custom tbody tr:hover {
-            background-color: #f8fafc;
-        }
         .item-chip {
             font-size: 11px;
             font-weight: 600;
@@ -229,36 +210,36 @@
         {{-- ═══════ Stats Cards ═══════ --}}
         <div class="row g-4 mb-4">
             <div class="col-md-3 col-6">
-                <div class="stat-card shadow-sm h-100">
+                <div class="stat-card shadow-sm h-100 border-0 text-white" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 6px;">
                     <div class="p-4 d-flex align-items-center gap-3">
-                        <div class="stat-icon-wrapper bg-soft-primary text-primary">
-                            <i class="feather-file-text"></i>
+                        <div class="stat-icon-wrapper d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.2); border-radius: 8px; width: 48px; height: 48px;">
+                            <i class="feather-file-text" style="font-size: 24px; color: #ffffff;"></i>
                         </div>
                         <div>
-                            <div class="fs-10 fw-bold text-muted text-uppercase tracking-wide mb-1">Total Bills</div>
-                            <div class="fs-3 fw-bolder text-dark lh-1">{{ number_format($stats['total']) }}</div>
+                            <div class="fs-10 fw-bold text-white-50 text-uppercase tracking-wide mb-1">Total Bills</div>
+                            <div class="fs-3 fw-bolder text-white lh-1">{{ number_format($stats['total']) }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="stat-card shadow-sm h-100 border-success border-opacity-25">
+                <div class="stat-card shadow-sm h-100 border-0 text-white" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 6px;">
                     <div class="p-4 d-flex align-items-center gap-3">
-                        <div class="stat-icon-wrapper bg-soft-success text-success">
-                            <i class="feather-calendar"></i>
+                        <div class="stat-icon-wrapper d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.2); border-radius: 8px; width: 48px; height: 48px;">
+                            <i class="feather-dollar-sign" style="font-size: 24px; color: #ffffff;"></i>
                         </div>
                         <div>
-                            <div class="fs-10 fw-bold text-muted text-uppercase tracking-wide mb-1">Today's Collection</div>
-                            <div class="fs-3 fw-bolder text-success lh-1">₹{{ number_format($stats['todayRevenue'], 0) }}</div>
+                            <div class="fs-10 fw-bold text-white-50 text-uppercase tracking-wide mb-1">Today's Collection</div>
+                            <div class="fs-3 fw-bolder text-white lh-1">₹{{ number_format($stats['todayRevenue'], 0) }}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="stat-card bg-gradient-primary shadow-sm h-100">
+                <div class="stat-card shadow-sm h-100 border-0 text-white" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 6px;">
                     <div class="p-4 d-flex align-items-center gap-3">
-                        <div class="stat-icon-wrapper bg-white bg-opacity-25 text-white">
-                            <i class="feather-trending-up"></i>
+                        <div class="stat-icon-wrapper d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.2); border-radius: 8px; width: 48px; height: 48px;">
+                            <i class="feather-pie-chart" style="font-size: 24px; color: #ffffff;"></i>
                         </div>
                         <div>
                             <div class="fs-10 fw-bold text-white-50 text-uppercase tracking-wide mb-1">Total Revenue</div>
@@ -268,14 +249,14 @@
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="stat-card shadow-sm h-100 border-danger border-opacity-25">
+                <div class="stat-card shadow-sm h-100 border-0 text-white" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border-radius: 6px;">
                     <div class="p-4 d-flex align-items-center gap-3">
-                        <div class="stat-icon-wrapper bg-soft-danger text-danger">
-                            <i class="feather-alert-circle"></i>
+                        <div class="stat-icon-wrapper d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.2); border-radius: 8px; width: 48px; height: 48px;">
+                            <i class="feather-alert-triangle" style="font-size: 24px; color: #ffffff;"></i>
                         </div>
                         <div>
-                            <div class="fs-10 fw-bold text-muted text-uppercase tracking-wide mb-1">Total Outstanding</div>
-                            <div class="fs-3 fw-bolder text-danger lh-1">₹{{ number_format($stats['due'], 0) }}</div>
+                            <div class="fs-10 fw-bold text-white-50 text-uppercase tracking-wide mb-1">Total Outstanding</div>
+                            <div class="fs-3 fw-bolder text-white lh-1">₹{{ number_format($stats['due'], 0) }}</div>
                         </div>
                     </div>
                 </div>
@@ -370,7 +351,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-custom mb-0 align-middle w-100">
+                    <table class="table mb-0 align-middle w-100">
                         <thead>
                             <tr>
                                 <th style="width:16%;">Invoice Info</th>
@@ -387,7 +368,7 @@
                                 <tr class="{{ $inv->status === 'Cancelled' ? 'opacity-50 grayscale bg-light' : '' }}">
                                     <!-- Invoice Info -->
                                     <td>
-                                        <div class="fw-bolder text-primary fs-13 mb-1">
+                                        <div class="fw-bolder fs-13 mb-1" style="color: #4318ff;">
                                             {{ $inv->invoice_number }}
                                             @if($inv->status === 'Cancelled')
                                                 <span class="badge bg-danger fs-9 ms-1 py-1 px-2">CANCELLED</span>
@@ -401,7 +382,7 @@
                                     <td>
                                         <div class="fw-bold text-dark fs-13 mb-1">{{ $inv->patient->name }}</div>
                                         <div class="d-flex align-items-center gap-2 mb-1">
-                                            <span class="badge bg-soft-info text-info border border-info border-opacity-25 fs-10 fw-bolder">{{ $inv->patient->formatted_id }}</span>
+                                            <span class="badge fs-10 fw-bolder" style="background-color: #f0f4ff; color: #4318ff; border: 1px solid #c7d2ff;">{{ $inv->patient->formatted_id }}</span>
                                             <span class="fs-11 text-muted">{{ $inv->patient->patientProfile->gender ?? 'N/A' }} / {{ $inv->patient->patientProfile->age ?? 'N/A' }}y</span>
                                         </div>
                                         <div class="fs-11 text-muted"><i class="feather-phone me-1"></i>{{ $inv->patient->phone ?? 'N/A' }}</div>
@@ -424,9 +405,9 @@
                                     <!-- Billing -->
                                     <td class="text-end">
                                         <div class="fw-bolder text-dark fs-14 mb-1">₹{{ number_format($inv->total_amount, 2) }}</div>
-                                        <div class="fs-11 text-success fw-bold">Paid: ₹{{ number_format($inv->paid_amount, 2) }}</div>
+                                        <div class="fs-11 fw-bold" style="color: #059669;">Paid: ₹{{ number_format($inv->paid_amount, 2) }}</div>
                                         @if($inv->due_amount > 0)
-                                            <div class="fs-11 text-danger fw-bold mt-1">Due: ₹{{ number_format($inv->due_amount, 2) }}</div>
+                                            <div class="fs-11 fw-bold mt-1" style="color: #dc2626;">Due: ₹{{ number_format($inv->due_amount, 2) }}</div>
                                         @endif
                                     </td>
                                     

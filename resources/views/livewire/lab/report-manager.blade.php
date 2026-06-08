@@ -24,63 +24,63 @@
         }
         .action-btn-warning {
             color: #d97706 !important;
-            background-color: #fef3c7 !important;
+            background-color: #fffbeb !important;
             border-color: #fde68a !important;
         }
         .action-btn-warning:hover {
             color: #ffffff !important;
-            background-color: #d97706 !important;
-            border-color: #d97706 !important;
+            background-color: #f59e0b !important;
+            border-color: #f59e0b !important;
         }
         .action-btn-info {
-            color: #0891b2 !important;
-            background-color: #ecfeff !important;
-            border-color: #cffafe !important;
+            color: #0284c7 !important;
+            background-color: #f0f9ff !important;
+            border-color: #bae6fd !important;
         }
         .action-btn-info:hover {
             color: #ffffff !important;
-            background-color: #0891b2 !important;
-            border-color: #0891b2 !important;
+            background-color: #0ea5e9 !important;
+            border-color: #0ea5e9 !important;
         }
         .action-btn-success {
-            color: #16a34a !important;
-            background-color: #f0fdf4 !important;
-            border-color: #bbf7d0 !important;
+            color: #059669 !important;
+            background-color: #ecfdf5 !important;
+            border-color: #a7f3d0 !important;
         }
         .action-btn-success:hover {
             color: #ffffff !important;
-            background-color: #16a34a !important;
-            border-color: #16a34a !important;
+            background-color: #10b981 !important;
+            border-color: #10b981 !important;
         }
         .action-btn-whatsapp {
-            color: #25d366 !important;
-            background-color: #e8f9ee !important;
-            border-color: #c3f2d2 !important;
+            color: #15803d !important;
+            background-color: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
         }
         .action-btn-whatsapp:hover {
             color: #ffffff !important;
-            background-color: #25d366 !important;
-            border-color: #25d366 !important;
+            background-color: #22c55e !important;
+            border-color: #22c55e !important;
         }
         .action-btn-primary {
-            color: #2563eb !important;
-            background-color: #eff6ff !important;
-            border-color: #bfdbfe !important;
+            color: #4318ff !important;
+            background-color: #f0f4ff !important;
+            border-color: #c7d2ff !important;
         }
         .action-btn-primary:hover {
             color: #ffffff !important;
-            background-color: #2563eb !important;
-            border-color: #2563eb !important;
+            background-color: #4318ff !important;
+            border-color: #4318ff !important;
         }
         .action-btn-danger {
             color: #dc2626 !important;
             background-color: #fef2f2 !important;
-            border-color: #fee2e2 !important;
+            border-color: #fecaca !important;
         }
         .action-btn-danger:hover {
             color: #ffffff !important;
-            background-color: #dc2626 !important;
-            border-color: #dc2626 !important;
+            background-color: #ef4444 !important;
+            border-color: #ef4444 !important;
         }
         .action-btn.dropdown-toggle::after {
             display: none !important;
@@ -236,13 +236,13 @@
                             @forelse($invoices as $invoice)
                                 <tr>
                                     <td>
-                                        <div class="fw-bold text-primary">{{ $invoice->invoice_number }}</div>
+                                        <div class="fw-bold" style="color: #4318ff;">{{ $invoice->invoice_number }}</div>
                                         <div class="fs-11 fw-bold text-dark mb-1">{{ $invoice->barcode }}</div>
                                         <div class="fs-10 text-muted">{{ $invoice->created_at->format('d/m/y h:i A') }}</div>
                                     </td>
                                     <td>
                                         <div class="fw-bold fs-14">{{ $invoice->patient->name }}</div>
-                                        <div class="badge bg-soft-info text-info fs-10 fw-bold px-2 py-1 mb-1">{{ $invoice->patient->formatted_id }}</div>
+                                        <div class="badge fs-10 fw-bold px-2 py-1 mb-1" style="background-color: #f0f4ff; color: #4318ff; border: 1px solid #c7d2ff;">{{ $invoice->patient->formatted_id }}</div>
                                         <div class="fs-10 text-muted">
                                             {{ $invoice->patient->patientProfile->age ?? '--' }} {{ $invoice->patient->patientProfile->age_type ?? 'Y' }} | {{ $invoice->patient->patientProfile->gender ?? '--' }}
                                         </div>
@@ -269,9 +269,9 @@
                                                         <div style="
                                                             font-size: 11px;
                                                             font-weight: 600;
-                                                            color: {{ $isComplete ? '#155724' : '#721c24' }};
-                                                            background: {{ $isComplete ? '#d4edda' : '#f8d7da' }};
-                                                            /* border-left: 3px solid {{ $isComplete ? '#28a745' : '#dc3545' }}; */
+                                                            color: {{ $isComplete ? '#059669' : '#d97706' }};
+                                                            background: {{ $isComplete ? '#ecfdf5' : '#fffbeb' }};
+                                                            border: 1px solid {{ $isComplete ? '#a7f3d0' : '#fde68a' }};
                                                             border-radius: 4px;
                                                             padding: 2px 7px;
                                                             white-space: normal;

@@ -1,4 +1,10 @@
 <div>
+    <style>
+        .hover-bg-light:hover {
+            background-color: rgba(0,0,0,0.03);
+            color: var(--bs-primary) !important;
+        }
+    </style>
     {{-- ======================== PAGE HEADER ======================== --}}
     <div class="page-header">
         <div class="page-header-left d-flex align-items-center">
@@ -16,85 +22,97 @@
     {{-- ======================== MAIN CONTENT ======================== --}}
     <div class="main-content">
 
-        {{-- Tab Navigation --}}
-        <ul class="nav nav-tabs mb-4" role="tablist">
-            @can('view settings')
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'general')"
-                        class="nav-link {{ $activeTab === 'general' ? 'active' : '' }}">
-                        <i class="feather-settings me-1"></i> General
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'modules')"
-                        class="nav-link {{ $activeTab === 'modules' ? 'active' : '' }}">
-                        <i class="feather-grid me-1"></i> Module Visibility
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'profile')"
-                        class="nav-link {{ $activeTab === 'profile' ? 'active' : '' }}">
-                        <i class="feather-home me-1"></i> Lab Profile
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'invoice')"
-                        class="nav-link {{ $activeTab === 'invoice' ? 'active' : '' }}">
-                        <i class="feather-file-text me-1"></i> Invoice Settings
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'template')"
-                        class="nav-link {{ $activeTab === 'template' ? 'active' : '' }}">
-                        <i class="feather-layout me-1"></i> Bill Templates
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'pdf')"
-                        class="nav-link {{ $activeTab === 'pdf' ? 'active' : '' }}">
-                        <i class="feather-printer me-1"></i> Report PDF Settings
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'signatures')"
-                        class="nav-link {{ $activeTab === 'signatures' ? 'active' : '' }}">
-                        <i class="feather-edit-3 me-1"></i> Signatures
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'barcode')"
-                        class="nav-link {{ $activeTab === 'barcode' ? 'active' : '' }}">
-                        <i class="feather-maximize me-1"></i> Barcode Settings
-                    </button>
-                </li>
-                @if(auth()->user()->company->plan?->features['whatsapp_custom'] ?? false)
-                    <li class="nav-item">
-                        <button wire:click="$set('activeTab', 'whatsapp')"
-                            class="nav-link {{ $activeTab === 'whatsapp' ? 'active' : '' }}">
-                            <i class="feather-message-circle me-1"></i> WhatsApp
-                        </button>
-                    </li>
-                @endif
-            @endcan
+        <div class="row g-4">
+            {{-- SIDE NAVIGATION --}}
+            <div class="col-lg-3 col-md-4">
+                <div class="card border-0 shadow-sm sticky-top" style="top: 85px; z-index: 10;">
+                    <div class="card-body p-2">
+                        <div class="fs-11 fw-bold text-uppercase text-muted px-3 mb-2 mt-1">General Settings</div>
+                        <ul class="nav nav-pills flex-column gap-1" role="tablist">
+                            @can('view settings')
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'general')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'general' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-settings me-2 fs-14"></i> General
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'modules')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'modules' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-grid me-2 fs-14"></i> Module Visibility
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'profile')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'profile' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-home me-2 fs-14"></i> Lab Profile
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'invoice')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'invoice' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-file-text me-2 fs-14"></i> Invoice Settings
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'template')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'template' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-layout me-2 fs-14"></i> Bill Templates
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'pdf')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'pdf' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-printer me-2 fs-14"></i> Report PDF Settings
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'signatures')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'signatures' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-edit-3 me-2 fs-14"></i> Signatures
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'barcode')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'barcode' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-maximize me-2 fs-14"></i> Barcode Settings
+                                    </button>
+                                </li>
+                                @if(auth()->user()->company->plan?->features['whatsapp_custom'] ?? false)
+                                    <li class="nav-item">
+                                        <button wire:click="$set('activeTab', 'whatsapp')"
+                                            class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'whatsapp' ? 'active shadow-sm' : 'text-secondary' }}">
+                                            <i class="feather-message-circle me-2 fs-14"></i> WhatsApp
+                                        </button>
+                                    </li>
+                                @endif
+                            @endcan
 
-            @can('view staff_roles')
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'staff')"
-                        class="nav-link {{ $activeTab === 'staff' ? 'active' : '' }}">
-                        <i class="feather-users me-1"></i> Staff & Roles
-                    </button>
-                </li>
-            @endcan
+                            @can('view staff_roles')
+                                <li class="nav-item mt-3">
+                                    <div class="fs-11 fw-bold text-uppercase text-muted px-3 mb-2">Access & Permissions</div>
+                                    <button wire:click="$set('activeTab', 'staff')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'staff' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-users me-2 fs-14"></i> Staff & Roles
+                                    </button>
+                                </li>
+                            @endcan
 
-            @can('view settings')
-                <li class="nav-item">
-                    <button wire:click="$set('activeTab', 'branch')"
-                        class="nav-link {{ $activeTab === 'branch' ? 'active' : '' }}">
-                        <i class="feather-git-merge me-1"></i> Branch Controls
-                    </button>
-                </li>
-            @endcan
-        </ul>
+                            @can('view settings')
+                                <li class="nav-item">
+                                    <button wire:click="$set('activeTab', 'branch')"
+                                        class="nav-link w-100 text-start px-3 py-2 fw-semibold rounded-2 {{ $activeTab === 'branch' ? 'active shadow-sm' : 'text-secondary' }}">
+                                        <i class="feather-git-merge me-2 fs-14"></i> Branch Controls
+                                    </button>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {{-- MAIN CONTENT --}}
+            <div class="col-lg-9 col-md-8">
 
         {{-- ═══════════════════════════════════════════════════════ --}}
         {{-- TAB 0: GENERAL SETTINGS --}}
@@ -2054,5 +2072,7 @@
                     }
                 </style>
             @endif
+            </div>
         </div>
     </div>
+</div>
