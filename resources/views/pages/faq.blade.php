@@ -4,7 +4,7 @@
 @endphp
 
 <x-landing-layout>
-    <x-slot name="title">FAQ - {{ \App\Models\SiteSetting::get('site_name', 'SWS Pathology') }}</x-slot>
+    <x-slot name="title">FAQ - {{ \App\Models\SiteSetting::get('site_name', 'Patholab-X') }}</x-slot>
 
     <div class="bg-white text-zinc-700 selection:bg-brand-500/10 selection:text-brand-700 font-sans overflow-hidden">
 
@@ -121,7 +121,7 @@
                                 class="inline-flex justify-center items-center px-8 py-4 bg-zinc-900 hover:bg-brand-600 text-white rounded-full font-bold shadow-lg shadow-zinc-900/10 hover:shadow-brand-500/25 transition-all duration-300 transform hover:-translate-y-0.5">
                                 Contact Support
                             </a>
-                            <a href="mailto:{{ \App\Models\SiteSetting::get('contact_email', 'support@swspathology.com') }}"
+                            <a href="mailto:{{ \App\Models\SiteSetting::get('contact_email', 'support@patholab-x.com') }}"
                                 class="inline-flex justify-center items-center px-8 py-4 bg-white text-zinc-700 rounded-full font-bold border border-zinc-200 hover:bg-zinc-50 hover:text-brand-600 transition-all duration-300">
                                 Email Us directly
                             </a>

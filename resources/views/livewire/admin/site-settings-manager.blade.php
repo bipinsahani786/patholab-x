@@ -193,7 +193,7 @@
                         <!-- HOW IT WORKS -->
                         @if($activeTab === 'how')
                             <div class="row g-3">
-                                <div class="col-md-6"><label class="form-label fw-bold">Hero Title</label><input type="text" wire:model="how_hero_title" class="form-control" placeholder="How SWS Automates Your Lab"></div>
+                                <div class="col-md-6"><label class="form-label fw-bold">Hero Title</label><input type="text" wire:model="how_hero_title" class="form-control" placeholder="How Patholab-X Automates Your Lab"></div>
                                 <div class="col-12"><label class="form-label fw-bold">Hero Description</label><textarea wire:model="how_hero_desc" class="form-control" rows="2"></textarea></div>
                             </div>
                         @endif

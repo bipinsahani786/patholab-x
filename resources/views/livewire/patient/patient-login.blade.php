@@ -1,11 +1,11 @@
 @php
-    $siteName = \App\Models\SiteSetting::get('site_name', 'SWS Pathology');
+    $siteName = \App\Models\SiteSetting::get('site_name', 'Patholab-X');
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
     $primaryColor = \App\Models\SiteSetting::get('primary_color', '#0284c7');
     
     // Split name for styling
     $nameParts = explode(' ', $siteName);
-    $firstName = $nameParts[0] ?? 'SWS';
+    $firstName = $nameParts[0] ?? 'Patholab-X';
     $lastName = implode(' ', array_slice($nameParts, 1)) ?: 'Pathology';
 @endphp
 

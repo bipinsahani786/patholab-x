@@ -17,7 +17,7 @@
                         </div>
                         <span
                             class="font-display font-bold text-2xl tracking-tight text-white uppercase transition-all duration-300">
-                            SWS <span class="text-brand-400">Pathology</span>
+                            Patholab<span class="text-brand-400">-X</span>
                         </span>
                     </div>
 
@@ -87,7 +87,7 @@
                     </div>
                     <span
                         class="font-display font-bold text-xl tracking-tight text-zinc-900 dark:text-white uppercase transition-all duration-300">
-                        SWS <span class="text-brand-600">Pathology</span>
+                        Patholab<span class="text-brand-600">-X</span>
                     </span>
                 </div>
                 <a href="{{ route('login') }}" class="text-sm font-bold text-brand-600">Log In</a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Locked | Sws SaaS</title>
+    <title>Account Locked | Patholab-X SaaS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
     <style>
@@ -124,7 +124,7 @@
         </div>
         
         <div class="mt-4 pt-4 border-top">
-            <p class="small mb-0">Need help? Contact support at <br><strong>support@swssaas.com</strong></p>
+            <p class="small mb-0">Need help? Contact support at <br><strong>support@patholab-x.com</strong></p>
         </div>
     </div>
 </body>

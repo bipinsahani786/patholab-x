@@ -1,5 +1,5 @@
 @php
-    $heroTitle = \App\Models\SiteSetting::get('hero_title', 'Modern Laboratories Run on SWS');
+    $heroTitle = \App\Models\SiteSetting::get('hero_title', 'Modern Laboratories Run on Patholab-X');
     $heroSubtitle = \App\Models\SiteSetting::get('hero_subtitle', 'The all-in-one cloud LIS platform. Connect analyzers, manage partners, and automate reporting with zero paper friction.');
     $heroCta = \App\Models\SiteSetting::get('hero_cta_text', 'Book a Demo');
     $heroImage = \App\Models\SiteSetting::get('hero_image');
@@ -27,7 +27,7 @@
 @endphp
 
 <x-landing-layout>
-    <x-slot name="title">{{ \App\Models\SiteSetting::get('meta_title', 'SWS Pathology - Precision Diagnostics') }}</x-slot>
+    <x-slot name="title">{{ \App\Models\SiteSetting::get('meta_title', 'Patholab-X - Precision Diagnostics') }}</x-slot>
 
     <div class="bg-white text-zinc-700 selection:bg-brand-500/10 selection:text-brand-700 font-sans">
 
@@ -71,7 +71,7 @@
                              @if($heroImage)
                                  <img src="{{ secure_storage_url($heroImage) }}" alt="{{ $heroTitle }} Dashboard" class="w-full h-auto object-contain rounded-xl shadow-inner">
                              @else
-                                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200" alt="SWS Pathology Dashboard Mockup" class="w-full aspect-[4/3] object-cover rounded-xl grayscale-[20%]">
+                                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200" alt="Patholab-X Dashboard Mockup" class="w-full aspect-[4/3] object-cover rounded-xl grayscale-[20%]">
                              @endif
                         </div>
                     </div>

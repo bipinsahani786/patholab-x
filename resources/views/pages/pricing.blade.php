@@ -11,7 +11,7 @@
 @endphp
 
 <x-landing-layout>
-    <x-slot name="title">Pricing - {{ \App\Models\SiteSetting::get('site_name', 'SWS Pathology') }}</x-slot>
+    <x-slot name="title">Pricing - {{ \App\Models\SiteSetting::get('site_name', 'Patholab-X') }}</x-slot>
 
     <!-- Hero -->
     <section class="pt-32 pb-20 relative overflow-hidden">

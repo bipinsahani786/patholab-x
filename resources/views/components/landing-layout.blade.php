@@ -12,7 +12,7 @@
         $pageKey = in_array($routeName, $pageKeys) ? $routeName : 'home';
 
         // Global Fallbacks (from 'home')
-        $globalTitle = \App\Models\SiteSetting::get('seo_home_title', 'SWS Pathology - Advanced Diagnostic Solutions');
+        $globalTitle = \App\Models\SiteSetting::get('seo_home_title', 'Patholab-X - Advanced Diagnostic Solutions');
         $globalDesc = \App\Models\SiteSetting::get('seo_home_description', 'Leading pathology management platform');
         $globalKeywords = \App\Models\SiteSetting::get('seo_home_keywords', 'pathology, lab management, software');
         $globalImage = \App\Models\SiteSetting::get('seo_home_og_image', \App\Models\SiteSetting::get('site_logo'));
@@ -28,7 +28,7 @@
         
         $siteFavicon = \App\Models\SiteSetting::get('site_favicon');
         $brandColor = \App\Models\SiteSetting::get('primary_color', '#0284c7');
-        $siteName = \App\Models\SiteSetting::get('site_name', 'SWS Pathology');
+        $siteName = \App\Models\SiteSetting::get('site_name', 'Patholab-X');
     @endphp
 
     <title>{{ $pageTitle }}</title>

@@ -1,5 +1,5 @@
 @php
-    $contactEmail = \App\Models\SiteSetting::get('contact_email', 'support@swspathology.com');
+    $contactEmail = \App\Models\SiteSetting::get('contact_email', 'support@patholab-x.com');
     $contactPhone = \App\Models\SiteSetting::get('contact_phone', '+91 98765 43210');
     $contactAddress = \App\Models\SiteSetting::get('contact_address', 'New Delhi, India');
     $contactWhatsapp = \App\Models\SiteSetting::get('contact_whatsapp', '+91 98765 43210');

@@ -44,6 +44,6 @@ class ContactPage extends Component
     public function render()
     {
         return view('livewire.landing.contact-page')
-            ->layout('components.landing-layout', ['title' => 'Contact Us - '.\App\Models\SiteSetting::get('site_name', 'SWS Pathology')]);
+            ->layout('components.landing-layout', ['title' => 'Contact Us - '.\App\Models\SiteSetting::get('site_name', 'Patholab-X')]);
     }
 }

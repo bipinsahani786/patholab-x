@@ -420,7 +420,7 @@
             </div>
 
             <div class="footer-support">
-                Need immediate assistance? Contact <a href="mailto:support@sws.com">support@sws.com</a>
+                Need immediate assistance? Contact <a href="mailto:support@patholab-x.com">support@patholab-x.com</a>
             </div>
         </div>
     </div>

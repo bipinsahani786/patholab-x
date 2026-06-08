@@ -58,6 +58,6 @@ class EnquiryPage extends Component
     public function render()
     {
         return view('livewire.landing.enquiry-page')
-            ->layout('components.landing-layout', ['title' => 'Request Demo - '.\App\Models\SiteSetting::get('site_name', 'SWS Pathology')]);
+            ->layout('components.landing-layout', ['title' => 'Request Demo - '.\App\Models\SiteSetting::get('site_name', 'Patholab-X')]);
     }
 }

@@ -1,5 +1,5 @@
 @php
-    $siteName = \App\Models\SiteSetting::get('site_name', 'SWS Pathology');
+    $siteName = \App\Models\SiteSetting::get('site_name', 'Patholab-X');
     $siteTagline = \App\Models\SiteSetting::get('site_tagline', 'Precision Diagnostics & Lab Intelligence');
     $contactEmail = \App\Models\SiteSetting::get('contact_email', 'support@swspathology.com');
     $contactPhone = \App\Models\SiteSetting::get('contact_phone', '+91 98765 43210');

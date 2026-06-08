@@ -351,7 +351,7 @@
             </div>
 
             <div class="footer-support">
-                Having continuous issues? Reach out to <a href="mailto:support@sws.com">support@sws.com</a>
+                Having continuous issues? Reach out to <a href="mailto:support@patholab-x.com">support@patholab-x.com</a>
             </div>
         </div>
     </div>

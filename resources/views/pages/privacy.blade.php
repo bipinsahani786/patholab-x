@@ -1,5 +1,5 @@
 <x-landing-layout>
-    <x-slot name="title">Privacy Policy - {{ \App\Models\SiteSetting::get('site_name', 'SWS Pathology') }}</x-slot>
+    <x-slot name="title">Privacy Policy - {{ \App\Models\SiteSetting::get('site_name', 'Patholab-X') }}</x-slot>
 
     <!-- Hero -->
     <section class="pt-32 pb-16 border-b border-zinc-100">
@@ -33,11 +33,11 @@
 
                 <div class="reveal bg-blue-50 p-8 rounded-2xl border border-blue-200">
                     <h4 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="feather-shield text-blue-500"></i> HIPAA & GDPR Compliance</h4>
-                    <p class="text-sm text-zinc-600 leading-relaxed">SWS Pathology maintains full compliance with HIPAA regulations for health data protection and GDPR standards for users in the European Union. Our infrastructure is regularly audited by independent security firms.</p>
+                    <p class="text-sm text-zinc-600 leading-relaxed">Patholab-X maintains full compliance with HIPAA regulations for health data protection and GDPR standards for users in the European Union. Our infrastructure is regularly audited by independent security firms.</p>
                 </div>
 
                 <div class="text-center pt-8 reveal">
-                    <p class="text-zinc-400 text-sm mb-8">Privacy questions? Contact privacy@swspathology.com</p>
+                    <p class="text-zinc-400 text-sm mb-8">Privacy questions? Contact privacy@patholab-x.com</p>
                     <a href="/" class="inline-block px-8 py-4 bg-gradient-to-r from-brand-500 to-brand-700 text-white rounded-2xl font-bold shadow-lg shadow-brand-500/25 hover:-translate-y-1 transition-all duration-300">Back to Home</a>
                 </div>
             </div>

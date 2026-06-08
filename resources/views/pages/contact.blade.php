@@ -1,5 +1,5 @@
 <x-landing-layout>
-    <x-slot name="title">Contact SWS Pathology - Support & Enterprise Sales</x-slot>
+    <x-slot name="title">Contact Patholab-X - Support & Enterprise Sales</x-slot>
 
     <!-- Background Grid & Accents -->
     <div class="fixed inset-0 z-[-1] bg-grid opacity-30"></div>
@@ -31,14 +31,14 @@
                         <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 flex items-center justify-center mb-6"><i class="feather-headphones"></i></div>
                         <h5 class="font-bold mb-2 italic tracking-tight">Global Support</h5>
                         <p class="text-xs text-zinc-400 font-medium">Available 24/7 for critical LIS emergencies.</p>
-                        <p class="text-brand-600 font-bold text-sm mt-4 italic">support@sws.com</p>
+                        <p class="text-brand-600 font-bold text-sm mt-4 italic">support@patholab-x.com</p>
                     </div>
                     <!-- 4. Sales -->
                     <div class="glass p-8 rounded-[2.5rem] border-white/5 transition-all hover:border-brand-500/20">
                         <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-6"><i class="feather-briefcase"></i></div>
                         <h5 class="font-bold mb-2 italic tracking-tight">Enterprise Sales</h5>
                         <p class="text-xs text-zinc-400 font-medium">Custom deployment & hospital pricing.</p>
-                        <p class="text-emerald-600 font-bold text-sm mt-4 italic">sales@sws.com</p>
+                        <p class="text-emerald-600 font-bold text-sm mt-4 italic">sales@patholab-x.com</p>
                     </div>
                 </div>
 

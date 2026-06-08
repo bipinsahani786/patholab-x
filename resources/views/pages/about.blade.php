@@ -1,6 +1,6 @@
 @php
     $aboutTitle = \App\Models\SiteSetting::get('about_title', 'Precision in Every Diagnostic Pulse');
-    $aboutDesc = \App\Models\SiteSetting::get('about_description', 'SWS Pathology emerged from a collaboration between veteran pathologists and software engineers to bridge the gap between clinical accuracy and digital efficiency.');
+    $aboutDesc = \App\Models\SiteSetting::get('about_description', 'Patholab-X emerged from a collaboration between veteran pathologists and software engineers to bridge the gap between clinical accuracy and digital efficiency.');
     $aboutImage = \App\Models\SiteSetting::get('about_image');
     $statLabs = \App\Models\SiteSetting::get('about_stat_labs', '500+');
     $statLabsLabel = \App\Models\SiteSetting::get('about_stat_labs_label', 'Labs Integrated');
@@ -21,7 +21,7 @@
 @endphp
 
 <x-landing-layout>
-    <x-slot name="title">About Us - {{ \App\Models\SiteSetting::get('site_name', 'SWS Pathology') }}</x-slot>
+    <x-slot name="title">About Us - {{ \App\Models\SiteSetting::get('site_name', 'Patholab-X') }}</x-slot>
 
     <div class="bg-white text-zinc-700 selection:bg-brand-500/10 selection:text-brand-700 font-sans overflow-hidden">
 

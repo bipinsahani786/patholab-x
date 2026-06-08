@@ -13,7 +13,7 @@
 @endphp
 
 <x-landing-layout>
-    <x-slot name="title">Features - {{ \App\Models\SiteSetting::get('site_name', 'SWS Pathology') }}</x-slot>
+    <x-slot name="title">Features - {{ \App\Models\SiteSetting::get('site_name', 'Patholab-X') }}</x-slot>
 
     <div class="bg-white text-zinc-700 selection:bg-brand-500/10 selection:text-brand-700 font-sans overflow-hidden">
 

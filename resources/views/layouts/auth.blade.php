@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? 'SWS Pathology - Secure Access' }}</title>
+    <title>{{ $title ?? 'Patholab-X - Secure Access' }}</title>
     @php
         $siteFavicon = \App\Models\SiteSetting::get('site_favicon');
     @endphp

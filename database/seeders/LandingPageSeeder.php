@@ -16,7 +16,7 @@ class LandingPageSeeder extends Seeder
         // ── Site Settings ──
         $settings = [
             // Branding
-            ['setting_key' => 'site_name', 'setting_value' => 'SWS Pathology', 'setting_group' => 'branding'],
+            ['setting_key' => 'site_name', 'setting_value' => 'Patholab-X', 'setting_group' => 'branding'],
             ['setting_key' => 'site_tagline', 'setting_value' => 'Precision Diagnostics & Lab Intelligence', 'setting_group' => 'branding'],
             ['setting_key' => 'site_logo', 'setting_value' => null, 'setting_group' => 'branding'],
             ['setting_key' => 'site_logo_dark', 'setting_value' => null, 'setting_group' => 'branding'],
@@ -32,7 +32,7 @@ class LandingPageSeeder extends Seeder
 
             // About
             ['setting_key' => 'about_title', 'setting_value' => 'Precision in Every Diagnostic Pulse', 'setting_group' => 'about'],
-            ['setting_key' => 'about_description', 'setting_value' => 'SWS Pathology emerged from a collaboration between veteran pathologists and software engineers who were tired of legacy systems slowing down critical medical decisions. Our goal was to create a zero-friction, automated LIS that works as fast as a diagnostic team thinks.', 'setting_group' => 'about'],
+            ['setting_key' => 'about_description', 'setting_value' => 'Patholab-X emerged from a collaboration between veteran pathologists and software engineers who were tired of legacy systems slowing down critical medical decisions. Our goal was to create a zero-friction, automated LIS that works as fast as a diagnostic team thinks.', 'setting_group' => 'about'],
             ['setting_key' => 'about_image', 'setting_value' => null, 'setting_group' => 'about'],
             ['setting_key' => 'about_stat_labs', 'setting_value' => '500+', 'setting_group' => 'about'],
             ['setting_key' => 'about_stat_labs_label', 'setting_value' => 'Labs Integrated', 'setting_group' => 'about'],
@@ -54,7 +54,7 @@ class LandingPageSeeder extends Seeder
             ['setting_key' => 'social_instagram', 'setting_value' => '#', 'setting_group' => 'social'],
 
             // SEO
-            ['setting_key' => 'meta_title', 'setting_value' => 'SWS Pathology - Advanced Diagnostic Solutions', 'setting_group' => 'seo'],
+            ['setting_key' => 'meta_title', 'setting_value' => 'Patholab-X - Advanced Diagnostic Solutions', 'setting_group' => 'seo'],
             ['setting_key' => 'meta_description', 'setting_value' => 'Leading pathology management SaaS platform for modern laboratories. Automate reporting, billing, and partner management.', 'setting_group' => 'seo'],
         ];
 

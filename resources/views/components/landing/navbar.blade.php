@@ -1,7 +1,7 @@
 @props(['transparent' => false])
 
 @php
-    $siteName = \App\Models\SiteSetting::get('site_name', 'SWS Pathology');
+    $siteName = \App\Models\SiteSetting::get('site_name', 'Patholab-X');
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
 
     // Updated Navigation Links with 'Home'
@@ -38,7 +38,7 @@
                         </div>
                     @endif
                     <span class="font-display font-extrabold text-xl tracking-tight">
-                        <span class="text-zinc-900">{{ explode(' ', $siteName)[0] ?? 'SWS' }}</span>
+                        <span class="text-zinc-900">{{ explode(' ', $siteName)[0] ?? 'Patholab-X' }}</span>
                         <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-400">
                             {{ implode(' ', array_slice(explode(' ', $siteName), 1)) ?: 'Pathology' }}
                         </span>
