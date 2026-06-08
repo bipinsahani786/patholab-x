@@ -1,79 +1,138 @@
 <div class="nxl-h-item dropdown">
     @if(auth()->user()->hasRole('lab_admin') || auth()->user()->hasRole('super_admin'))
         <a href="javascript:void(0);" 
-           class="nxl-head-link me-3 border rounded-pill px-3 py-2 d-flex align-items-center gap-2 bg-white shadow-sm" 
+           class="nxl-head-link me-3 d-flex align-items-center gap-3 transition-all p-2 rounded-3 hover-bg-light" 
            data-bs-toggle="dropdown" 
+           data-bs-display="static"
            role="button" 
-           data-bs-auto-close="outside">
-            <div class="bg-soft-primary text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
-                <i class="feather-git-merge fs-12"></i>
+           data-bs-auto-close="outside" style="border: 1px dashed rgba(0,0,0,0.1);">
+            
+            <div class="d-flex flex-column align-items-end">
+                <span class="fs-9 fw-bold text-uppercase text-muted ls-1 mb-0">Workspace</span>
+                <span class="fs-13 fw-bolder text-dark text-truncate" style="max-width: 150px;">
+                    @if($activeBranchId === 'all' || !$activeBranchId)
+                        All Branches
+                    @else
+                        {{ collect($branches)->firstWhere('id', $activeBranchId)['name'] ?? \App\Models\Branch::find($activeBranchId)?->name ?? 'Select Branch' }}
+                    @endif
+                </span>
             </div>
-            <span class="fs-12 fw-bold text-dark text-truncate d-none d-md-inline-block" style="max-width: 150px;">
-                @if($activeBranchId === 'all' || !$activeBranchId)
-                    All Branches
-                @else
-                    {{ collect($branches)->firstWhere('id', $activeBranchId)['name'] ?? \App\Models\Branch::find($activeBranchId)?->name ?? 'Select Branch' }}
-                @endif
-            </span>
-            <i class="feather-chevron-down fs-10 text-muted ms-1"></i>
+            
+            <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px;">
+                <i class="feather-layers fs-14"></i>
+            </div>
         </a>
         
-        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown shadow-lg border-0 rounded-3 p-0" style="min-width: 280px; margin-top: 10px !important;">
-            <div class="dropdown-header p-3 border-bottom bg-light">
-                <div class="d-flex align-items-center justify-content-between">
-                    <span class="fw-bold text-muted text-uppercase fs-10 ls-1">Select Branch Context</span>
-                    <i class="feather-layers text-primary fs-12"></i>
+        <div class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0 force-dropdown-down" style="min-width: 300px; overflow: hidden; position: absolute;">
+            
+            <!-- CURRENT WORKSPACE HERO -->
+            <div class="p-3 position-relative" style="background: linear-gradient(135deg, #0b1437 0%, #1a2a6c 100%);">
+                <div class="position-absolute top-0 end-0 p-2 opacity-25">
+                    <i class="feather-map-pin" style="font-size: 40px; color: white;"></i>
+                </div>
+                <h6 class="text-white opacity-50 mb-2 fs-9 text-uppercase ls-1">Active Context</h6>
+                <div class="d-flex align-items-center gap-3 position-relative z-index-1">
+                    <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 36px; height: 36px;">
+                        <i class="feather-briefcase fs-16"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-white mb-1 fw-bolder" style="font-size: 14px;">
+                            @if($activeBranchId === 'all' || !$activeBranchId)
+                                All Branches
+                            @else
+                                {{ collect($branches)->firstWhere('id', $activeBranchId)['name'] ?? \App\Models\Branch::find($activeBranchId)?->name ?? 'Select Branch' }}
+                            @endif
+                        </h5>
+                        <span class="badge bg-white text-primary fw-bolder border-0 fs-9 px-2 py-1">
+                            {{ $activeBranchId === 'all' ? 'Global View' : 'Branch View' }}
+                        </span>
+                    </div>
                 </div>
             </div>
             
-            <div class="p-2 max-h-300 overflow-y-auto">
+            <!-- BRANCH SELECTION GRID -->
+            <div class="p-2 bg-light border-bottom">
+                <span class="fw-bolder text-dark text-uppercase ms-2" style="font-size: 10px; letter-spacing: 1px;">Switch Workspace</span>
+            </div>
+
+            <div class="p-2 overflow-y-auto" style="background-color: #f8f9fa; max-height: 400px;">
+                
+                <!-- ALL BRANCHES OPTION -->
                 <a href="javascript:void(0);" 
                    wire:click="switchBranch('all')" 
-                   class="dropdown-item rounded-2 py-2 px-3 d-flex align-items-center gap-3 transition-all mb-1 {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'active bg-soft-primary text-primary' : '' }}">
-                    <div class="avatar-text avatar-xs bg-soft-secondary text-secondary rounded">
-                        <i class="feather-globe fs-14"></i>
+                   class="d-flex align-items-center gap-2 p-2 rounded-2 mb-1 text-decoration-none transition-all {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'border border-primary bg-white shadow-sm' : 'border border-transparent hover-bg-white hover-shadow-sm' }}">
+                    
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'bg-primary text-white' : 'bg-soft-secondary text-secondary' }}" style="width: 28px; height: 28px;">
+                        <i class="feather-globe" style="font-size: 12px;"></i>
                     </div>
-                    <span class="fw-medium">Standard View (All Branches)</span>
+                    
+                    <div class="flex-grow-1">
+                        <div class="fw-bold m-0 p-0 {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'text-primary' : 'text-dark' }}" style="font-size: 12px; line-height: 1.2;">Standard View</div>
+                        <div class="text-muted m-0 p-0" style="font-size: 10px; line-height: 1.2;">See data from all branches</div>
+                    </div>
+                    
+                    @if($activeBranchId === 'all' || !$activeBranchId)
+                        <i class="feather-check-circle text-primary" style="font-size: 14px;"></i>
+                    @endif
                 </a>
-                
-                <div class="dropdown-divider mx-2 my-2"></div>
 
-                @forelse($branches as $branch)
-                    <a href="javascript:void(0);" 
-                       wire:click="switchBranch({{ $branch->id }})" 
-                       class="dropdown-item rounded-2 py-2 px-3 d-flex align-items-center gap-3 transition-all mb-1 {{ $activeBranchId == $branch->id ? 'active bg-soft-primary text-primary font-bold' : '' }}">
-                        <div class="avatar-text avatar-xs {{ $branch->type === 'main_lab' ? 'bg-soft-danger text-danger' : 'bg-soft-info text-info' }} rounded">
-                            <i class="feather-briefcase fs-14"></i>
+                <!-- INDIVIDUAL BRANCHES -->
+                <div class="row g-1 mt-1">
+                    @forelse($branches as $branch)
+                        <div class="col-12">
+                            <a href="javascript:void(0);" 
+                               wire:click="switchBranch({{ $branch->id }})" 
+                               class="d-flex align-items-center gap-2 p-2 rounded-2 text-decoration-none transition-all {{ $activeBranchId == $branch->id ? 'border border-primary bg-white shadow-sm' : 'border border-light bg-white hover-shadow-sm' }}">
+                                
+                                <div class="rounded d-flex align-items-center justify-content-center flex-shrink-0 {{ $activeBranchId == $branch->id ? 'bg-primary text-white' : ($branch->type === 'main_lab' ? 'bg-soft-danger text-danger' : 'bg-soft-info text-info') }}" style="width: 28px; height: 28px;">
+                                    <i class="feather-home" style="font-size: 12px;"></i>
+                                </div>
+                                
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <div class="fw-bold text-truncate m-0 p-0 {{ $activeBranchId == $branch->id ? 'text-primary' : 'text-dark' }}" style="font-size: 12px; line-height: 1.2;">{{ $branch->name }}</div>
+                                    <div class="opacity-75 text-muted m-0 p-0" style="font-size: 10px; line-height: 1.2;">{{ $branch->type === 'main_lab' ? 'Main Lab' : 'Processing Center' }}</div>
+                                </div>
+                                
+                                @if($activeBranchId == $branch->id)
+                                    <i class="feather-check-circle text-primary" style="font-size: 14px;"></i>
+                                @endif
+                            </a>
                         </div>
-                        <div class="flex-grow-1 overflow-hidden">
-                            <div class="fw-semibold text-truncate fs-13">{{ $branch->name }}</div>
-                            <div class="fs-10 opacity-75 text-truncate">{{ $branch->type === 'main_lab' ? 'Main Lab' : 'Processing Center' }}</div>
+                    @empty
+                        <div class="col-12 p-3 text-center">
+                            <i class="feather-folder-minus text-muted d-block mb-1" style="font-size: 24px;"></i>
+                            <span class="text-muted fw-medium" style="font-size: 11px;">No branches available</span>
                         </div>
-                        @if($activeBranchId == $branch->id)
-                            <i class="feather-check-circle fs-12 text-primary"></i>
-                        @endif
-                    </a>
-                @empty
-                    <div class="p-4 text-center">
-                        <i class="feather-alert-circle text-muted fs-4 d-block mb-2"></i>
-                        <span class="text-muted fs-12">No active branches found</span>
-                    </div>
-                @endforelse
+                    @endforelse
+                </div>
             </div>
             
-            <div class="p-2 border-top bg-light text-center">
-                <a href="{{ route('lab.branches') }}" wire:navigate class="fs-11 fw-bold text-primary text-decoration-none hover-underline">
-                    Manage Branches <i class="feather-arrow-right ms-1"></i>
+            <!-- FOOTER ACTION -->
+            <div class="p-2 bg-white text-center border-top">
+                <a href="{{ route('lab.branches') }}" wire:navigate class="btn btn-light btn-sm w-100 fw-bold d-flex align-items-center justify-content-center gap-1" style="font-size: 11px; padding: 6px;">
+                    <i class="feather-settings" style="font-size: 12px;"></i> Manage Branch Settings
                 </a>
             </div>
         </div>
     @endif
     
     <style>
-        .max-h-300 { max-height: 300px; }
+        .max-h-300 { max-height: 250px; }
         .overflow-y-auto { overflow-y: auto; }
         .transition-all { transition: all 0.2s ease; }
-        .dropdown-item:hover:not(.active) { background-color: rgba(0,0,0,0.03); transform: translateX(3px); }
-        .dropdown-item.active { border-left: 3px solid var(--bs-primary); }
+        .hover-bg-light:hover { background-color: rgba(0,0,0,0.02); }
+        .hover-bg-white:hover { background-color: #ffffff; }
+        .hover-shadow-sm:hover { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important; }
+        .z-index-1 { z-index: 1; }
+        
+        /* Force Dropdown to always open downwards and ignore Popper.js upward transforms */
+        .force-dropdown-down {
+            top: 100% !important;
+            bottom: auto !important;
+            transform: none !important;
+            margin-top: 10px !important;
+            right: 0 !important;
+            left: auto !important;
+        }
     </style>
 </div>

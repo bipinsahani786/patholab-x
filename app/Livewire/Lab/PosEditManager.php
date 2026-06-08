@@ -1361,14 +1361,12 @@ class PosEditManager extends Component
         }
 
         // Test suggestions
-        if ($this->activeSearchField === 'test') {
-            $s = $this->testSearch;
-            $query = LabTest::where('company_id', $companyId)->where('is_active', true);
-            if (! empty($s)) {
-                $query->where(fn ($q) => $q->where('name', 'like', "%{$s}%")->orWhere('test_code', 'like', "%{$s}%"));
-            }
-            $tests = $query->orderBy('id', 'desc')->take(15)->get();
+        $s = $this->testSearch;
+        $query = LabTest::where('company_id', $companyId)->where('is_active', true);
+        if (! empty($s)) {
+            $query->where(fn ($q) => $q->where('name', 'like', "%{$s}%")->orWhere('test_code', 'like', "%{$s}%"));
         }
+        $tests = $query->orderBy('name', 'asc')->take(100)->get();
 
         return view('livewire.lab.pos-edit-manager', [
             'doctors' => $doctors,

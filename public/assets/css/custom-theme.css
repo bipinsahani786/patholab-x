@@ -556,3 +556,149 @@ html.app-skin-dark .text-dark {
 .dropdown-menu {
     z-index: 1060 !important;
 }
+
+/* ========================================= */
+/* PHASE 1: SIDEBAR & HEADER REDESIGN (FULL SPACE) */
+/* ========================================= */
+
+/* 1. PREMIUM FULL-SPACE SIDEBAR */
+.nxl-navigation {
+    background-color: #0b1437 !important; /* Deep Navy Dark */
+    border-right: none !important;
+}
+
+/* Sidebar Logo Area */
+.nxl-navigation .m-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Sidebar Menu Items */
+.nxl-navigation .nxl-navbar .nxl-item .nxl-link {
+    color: #a3b1cc !important;
+    border-radius: 8px !important;
+    margin: 4px 16px !important;
+    padding: 12px 16px !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+}
+
+.nxl-navigation .nxl-navbar .nxl-item .nxl-link .nxl-micon i {
+    color: #a3b1cc !important;
+    font-size: 18px !important;
+}
+
+/* Sidebar Hover & Active states */
+.nxl-navigation .nxl-navbar .nxl-item.active > .nxl-link,
+.nxl-navigation .nxl-navbar .nxl-item .nxl-link:hover {
+    background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 15px rgba(67, 24, 255, 0.3) !important;
+    border-right: none !important;
+}
+.nxl-navigation .nxl-navbar .nxl-item.active > .nxl-link::before {
+    display: none !important;
+}
+.nxl-navigation .nxl-navbar .nxl-item.active > .nxl-link .nxl-micon i,
+.nxl-navigation .nxl-navbar .nxl-item .nxl-link:hover .nxl-micon i {
+    color: #ffffff !important;
+}
+
+/* Sidebar Captions */
+.nxl-navigation .nxl-navbar .nxl-caption label {
+    color: rgba(163, 177, 204, 0.5) !important;
+    font-size: 10px !important;
+    letter-spacing: 1.5px !important;
+}
+
+/* 2. MODERN HEADER */
+.nxl-header {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02) !important;
+}
+
+html.app-skin-dark .nxl-header {
+    background: rgba(26, 29, 41, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Floating Pill Search Bar */
+.search-form-wrapper .position-relative {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-radius: 50px !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid transparent !important;
+}
+html.app-skin-dark .search-form-wrapper .position-relative {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+.search-form-wrapper .position-relative:focus-within,
+.search-form-wrapper .position-relative:hover {
+    background: #ffffff !important;
+    border-color: #4318FF !important;
+    box-shadow: 0 5px 20px rgba(67, 24, 255, 0.1) !important;
+    width: 260px !important; /* Expand on hover/focus */
+}
+html.app-skin-dark .search-form-wrapper .position-relative:focus-within {
+    background: #1a1d29 !important;
+}
+.search-form-wrapper input {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 50px !important;
+    padding-left: 40px !important;
+    font-weight: 500 !important;
+}
+
+/* Header User Profile */
+.nxl-header .user-avtar {
+    border-radius: 50% !important; /* Make it a circle */
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.3s ease !important;
+}
+.nxl-header .user-avtar:hover {
+    transform: scale(1.1) !important;
+}
+html.app-skin-dark .nxl-header .user-avtar {
+    border-color: #1a1d29 !important;
+}
+
+/* 3. GLOBAL UI TWEAKS */
+body {
+    background-color: #f4f7fe !important;
+}
+
+html.app-skin-dark body {
+    background-color: #0b1437 !important;
+}
+
+/* Softer Cards */
+.card {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(112, 144, 176, 0.08) !important;
+}
+html.app-skin-dark .card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    background-color: #111c44 !important;
+}
+
+/* Modern Buttons */
+.btn {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(67, 24, 255, 0.2) !important;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 24, 255, 0.3) !important;
+}

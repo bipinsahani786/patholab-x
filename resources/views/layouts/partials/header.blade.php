@@ -17,22 +17,7 @@
                 </a>
             </div>
             
-            {{-- Global Search Trigger --}}
-            @if(!auth()->user()->hasRole('super_admin') && !auth()->user()->patientProfile)
-            <div class="header-search-wrapper d-none d-md-flex">
-                <div class="search-form-wrapper">
-                    <form action="javascript:void(0);" class="search-form">
-                        <div class="position-relative" style="width: 220px;">
-                            <i class="feather-search text-muted position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); z-index: 5; font-size: 14px;"></i>
-                            <input type="text" class="form-control border shadow-none fs-13" 
-                                placeholder="Search Navigation (Dash, POS, etc...)" 
-                                style="padding-left: 35px; height: 38px; cursor: pointer; background: rgba(0,0,0,0.02); border-radius: 8px !important;"
-                                data-bs-toggle="modal" data-bs-target="#searchModal" readonly>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            @endif
+            {{-- Global Search Trigger (Removed) --}}
         </div>
 
         <div class="header-right ms-auto">
@@ -51,19 +36,19 @@
                 @endphp
 
                 @if($company && auth()->user()->hasAnyRole(['lab_admin', 'staff', 'branch_admin']))
-                    <div class="d-none d-xl-flex align-items-center me-2 border rounded-3 p-1 bg-white shadow-sm border-light overflow-hidden">
-                        <div class="avatar-text avatar-md bg-soft-primary text-primary rounded-3 me-2 flex-shrink-0" style="width: 32px; height: 32px; line-height: 32px;">
-                            <i class="feather-zap fs-12"></i>
+                    <div class="d-none d-xl-flex align-items-center me-3 px-3 py-2 rounded-pill border-0 transition-all" style="background-color: #f4f7fe;">
+                        <div class="text-primary me-2 flex-shrink-0">
+                            <i class="feather-zap fs-14"></i>
                         </div>
-                        <div class="me-3 flex-shrink-0">
+                        <div class="me-3 flex-shrink-0" style="border-right: 1px solid rgba(0,0,0,0.05); padding-right: 12px;">
                             <span class="fs-9 fw-bold text-uppercase text-muted ls-1 d-block mb-0" style="font-size: 8px !important;">Current Plan</span>
-                            <span class="fs-11 fw-bolder text-dark">{{ $company->plan->name ?? 'Professional' }}</span>
+                            <span class="fs-12 fw-bolder text-dark">{{ $company->plan->name ?? 'Professional' }}</span>
                         </div>
-                        <div class="border-start ps-3 py-1 me-1 text-end flex-shrink-0">
-                            <span class="fs-9 fw-bold text-uppercase {{ $isExpiringSoon ? 'text-danger pulse-once' : 'text-success' }} ls-1 d-block mb-0" style="font-size: 8px !important;">
+                        <div class="flex-shrink-0 text-center">
+                            <span class="fs-10 fw-bold text-uppercase {{ $isExpiringSoon ? 'text-danger pulse-once' : 'text-success' }} ls-1 d-block mb-0">
                                 {{ $daysLeftInt > 0 ? $daysLeftInt . ' Days Left' : 'Expired' }}
                             </span>
-                            <span class="fs-11 fw-medium text-muted" style="font-size: 10px !important;">Active Trial</span>
+                            <span class="fs-10 fw-medium text-muted" style="font-size: 9px !important;">Active Trial</span>
                         </div>
                     </div>
                 @endif
@@ -89,52 +74,65 @@
                 </div>
                 @endif
 
-                <div class="dropdown nxl-h-item">
+                <div class="dropdown nxl-h-item" style="position: relative;">
                     @php
                         $userPhoto = auth()->user()->details->profile_photo ?? null;
                         $avatarUrl = $userPhoto 
                             ? Storage::url($userPhoto) 
                             : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b71ca&color=fff&bold=true';
                     @endphp
-                    <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
+                    <a href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-display="static" role="button" data-bs-auto-close="outside">
                         <img src="{{ $avatarUrl }}" alt="user-image"
-                            class="img-fluid user-avtar me-0 rounded-2 border shadow-sm" style="width: 38px; height: 38px; object-fit: cover;" />
+                            class="img-fluid user-avtar me-0 rounded-circle border border-white shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" />
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown shadow-lg border-0 rounded-3">
-                        <div class="dropdown-header p-4" style="background: linear-gradient(135deg, rgba(59,113,202,0.05) 0%, rgba(124,58,237,0.05) 100%);">
-                            <div class="d-flex align-items-center gap-3">
+                    <div class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0" style="min-width: 280px; overflow: hidden; position: absolute; right: 0; left: auto; top: 100%; margin-top: 10px;">
+                        <div class="p-3 position-relative" style="background: linear-gradient(135deg, #0b1437 0%, #1a2a6c 100%) !important;">
+                            <div class="position-absolute top-0 end-0 p-2 opacity-25">
+                                <i class="feather-user" style="font-size: 40px; color: white;"></i>
+                            </div>
+                            <div class="d-flex align-items-center gap-3 position-relative z-index-1">
                                 <img src="{{ $avatarUrl }}" alt="user-image"
-                                    class="img-fluid user-avtar rounded-2 border border-white border-4 shadow-sm" style="width:50px; height:50px; object-fit: cover;" />
-                                <div>
-                                    <h6 class="text-dark fw-bold mb-0 fs-14 text-truncate" style="max-width: 150px;">{{ auth()->user()->name }} 
-                                        <span class="badge bg-soft-success text-success ms-1 fs-9 text-uppercase">
+                                    class="img-fluid user-avtar rounded-circle border border-white border-2 shadow" style="width:48px; height:48px; object-fit: cover;" />
+                                <div class="overflow-hidden">
+                                    <h6 class="text-white fw-bold mb-0 text-truncate" style="font-size: 14px; max-width: 150px;">{{ auth()->user()->name }} 
+                                        @if($company && isset($company->plan))
+                                        <span class="badge bg-white text-primary ms-1 px-1 py-0 rounded" style="font-size: 9px; vertical-align: top;">
                                             {{ $company->plan->name ?? 'Free' }}
                                         </span>
+                                        @endif
                                     </h6>
-                                    <span class="fs-12 fw-medium text-muted d-block text-truncate" style="max-width: 150px;">{{ auth()->user()->email }}</span>
+                                    <span class="text-white opacity-75 d-block text-truncate mt-1" style="font-size: 11px; max-width: 160px;">{{ auth()->user()->email }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2">
+                        <div class="p-2" style="background-color: #f8f9fa;">
                             @php
                                 $isInternalStaff = auth()->user()->hasAnyRole(['lab_admin', 'staff', 'branch_admin']);
                                 $profileRoute = $isInternalStaff ? 'lab.profile' : 'partner.profile';
                                 $settingsRoute = $isInternalStaff ? 'lab.settings' : 'partner.profile';
                             @endphp
-                            <a href="{{ route($profileRoute) }}" wire:navigate class="dropdown-item rounded-3 py-2 px-3 transition-all">
-                                <i class="feather-user me-2 text-primary"></i>
-                                <span class="fw-medium">Profile Details</span>
+                            <a href="{{ route($profileRoute) }}" wire:navigate class="d-flex align-items-center gap-3 p-2 rounded-2 mb-1 text-decoration-none transition-all border border-transparent hover-bg-white hover-shadow-sm">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-soft-primary text-primary flex-shrink-0" style="width: 28px; height: 28px;">
+                                    <i class="feather-user" style="font-size: 12px;"></i>
+                                </div>
+                                <span class="fw-bold text-dark m-0 p-0" style="font-size: 12px;">Profile Details</span>
                             </a>
-                            <a href="{{ route($settingsRoute) }}" wire:navigate class="dropdown-item rounded-3 py-2 px-3 transition-all">
-                                <i class="feather-settings me-2 text-primary"></i>
-                                <span class="fw-medium">Account Settings</span>
+                            <a href="{{ route($settingsRoute) }}" wire:navigate class="d-flex align-items-center gap-3 p-2 rounded-2 mb-1 text-decoration-none transition-all border border-transparent hover-bg-white hover-shadow-sm">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-soft-info text-info flex-shrink-0" style="width: 28px; height: 28px;">
+                                    <i class="feather-settings" style="font-size: 12px;"></i>
+                                </div>
+                                <span class="fw-bold text-dark m-0 p-0" style="font-size: 12px;">Account Settings</span>
                             </a>
-                            <div class="dropdown-divider mx-3"></div>
+                            
+                            <div class="dropdown-divider my-2 mx-2"></div>
+                            
                             <form method="POST" action="{{ route('logout') }}" id="logout-form-header">
                                 @csrf
-                                <button type="submit" class="dropdown-item rounded-3 py-2 px-3 text-danger transition-all">
-                                    <i class="feather-log-out me-2"></i>
-                                    <span class="fw-bold">Logout</span>
+                                <button type="submit" class="w-100 bg-transparent border-0 text-start d-flex align-items-center gap-3 p-2 rounded-2 text-decoration-none transition-all border border-transparent hover-bg-white hover-shadow-sm">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-soft-danger text-danger flex-shrink-0" style="width: 28px; height: 28px;">
+                                        <i class="feather-log-out" style="font-size: 12px;"></i>
+                                    </div>
+                                    <span class="fw-bold text-danger m-0 p-0" style="font-size: 12px;">Logout</span>
                                 </button>
                             </form>
                         </div>
@@ -145,9 +143,6 @@
     </div>
 
     <style>
-        /* Revert to box aesthetics for user avatar */
-        .user-avtar.rounded-2 { border-radius: 6px !important; }
-        
         /* Modal Backdrop & Global Blur: Remove blur effect */
         .modal-backdrop.show {
             backdrop-filter: none !important;

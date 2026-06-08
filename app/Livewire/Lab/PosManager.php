@@ -1233,7 +1233,7 @@ class PosManager extends Component
                     'test_name' => $item['name'],
                     'is_package' => $item['is_package'],
                     'mrp' => $item['mrp'],
-                    'price' => $item['mrp'],
+                    'price' => $item['price'] ?? $item['mrp'],
                     'b2b_price' => data_get($testPrices->get($item['id']), 'b2b_price', 0),
                 ]);
             }
@@ -1363,21 +1363,12 @@ class PosManager extends Component
         }
 
         $tests = [];
-        if ($this->activeSearchField === 'test') {
-            $s = $this->testSearch;
-            // Lab Tests do not have branch_id on them natively. They are global.
-            // If they shouldn't share lab tests, we might need a mapping table.
-            // For now, if shareTests is false, branches might not be able to search tests at all. But usually tests are company wide.
-            // Wait, LabTest table doesn't have branch_id. It's only company_id.
-            // So if sharing is off, they only get an empty list unless we added it?
-            // Since we don't have branch_id on tests, we won't strictly enforce test siloing at db level for now,
-            // or we just show them anyway if there's no way to create branch tests.
-            $query = LabTest::where('company_id', $companyId)->where('is_active', true);
-            if (!empty($s)) {
-                $query->where(fn($q) => $q->where('name', 'ilike', "%{$s}%")->orWhere('test_code', 'ilike', "%{$s}%"));
-            }
-            $tests = $query->orderBy('id', 'desc')->take(15)->get();
+        $s = $this->testSearch;
+        $query = LabTest::where('company_id', $companyId)->where('is_active', true);
+        if (!empty($s)) {
+            $query->where(fn($q) => $q->where('name', 'ilike', "%{$s}%")->orWhere('test_code', 'ilike', "%{$s}%"));
         }
+        $tests = $query->orderBy('id', 'desc')->take(30)->get();
 
         // Reactive Dropdowns (Cached with precise keys)
         $paymentModes = \Illuminate\Support\Facades\Cache::remember("payment_modes_{$companyId}", 3600, function () use ($companyId) {

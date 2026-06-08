@@ -34,7 +34,15 @@
         .pos-voucher-box {
             background: rgba(var(--bs-primary-rgb), 0.08);
         }
-    </style>
+    
+        /* Boxy UI Overrides */
+        .card, .form-control, .form-select, .btn, .input-group-text, .badge, .list-group-item {
+            border-radius: 2px !important;
+        }
+        .rounded-3, .rounded-circle, .rounded-pill, .rounded {
+            border-radius: 2px !important;
+        }
+</style>
 
     {{-- ======================== PAGE HEADER (Aligned with POS) ======================== --}}
     <div class="page-header">
@@ -72,8 +80,8 @@
         @endif
 
         <div class="row g-3">
-            {{-- ============== LEFT COLUMN ============== --}}
-            <div class="col-xl-8">
+            {{-- ============== MAIN COLUMN ============== --}}
+            <div class="col-12">
 
                 {{-- ══════ ROW 1: PATIENT · DOCTOR · AGENT ══════ --}}
                 <div class="row g-3 mb-3">
@@ -428,7 +436,56 @@
                 </div>
 
                 {{-- ══════ ROW 3: TEST SEARCH + CART ══════ --}}
-                <div class="card">
+                <div class="row g-3">
+                    {{-- 3.1 Tests List (Permanent Left Side) --}}
+                    <div class="col-md-5">
+                        <div class="card h-100 mb-0">
+                            <div class="card-header py-2 bg-light">
+                                <h5 class="card-title fs-12 mb-0 text-dark"><i class="feather-search me-2 text-primary"></i>Lab Tests</h5>
+                            </div>
+                            <div class="card-body p-2 d-flex flex-column" style="max-height: 500px;">
+                                <div class="input-group input-group-sm mb-2 shadow-sm">
+                                    <span class="input-group-text bg-white"><i class="feather-search text-primary"></i></span>
+                                    <input type="text" class="form-control fw-semibold border-start-0 ps-0" 
+                                        wire:model.live.debounce.300ms="testSearch" 
+                                        autocomplete="off" placeholder="Search tests...">
+                                </div>
+                                <div class="flex-grow-1 overflow-auto pe-1 custom-scrollbar">
+                                    @if (!empty($tests) && count($tests) > 0)
+                                        <div class="list-group list-group-flush">
+                                            @foreach ($tests as $test)
+                                                <button wire:click="addTestToCart({{ $test->id }})" 
+                                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 px-2 border-bottom mb-1" style="border-radius: 4px; background-color: #f8f9fa;">
+                                                    <div class="text-truncate me-2">
+                                                        <div class="fw-bold text-dark fs-11 text-truncate">{{ $test->name }}</div>
+                                                        <div class="fs-10 text-muted">{{ $test->test_code ?? 'N/A' }}</div>
+                                                    </div>
+                                                    <div class="text-end flex-shrink-0">
+                                                        <div class="fw-bold text-success fs-12">₹{{ number_format($test->mrp, 0) }}</div>
+                                                        @if ($test->is_package)
+                                                            <span class="badge bg-primary px-1 py-0 fs-9">PKG</span>
+                                                        @endif
+                                                    </div>
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    @elseif(!empty($testSearch))
+                                        <div class="text-center py-4">
+                                            <div class="fw-bold text-muted fs-11">No test found</div>
+                                        </div>
+                                    @else
+                                        <div class="text-center py-4">
+                                            <div class="fw-bold text-muted fs-11">Type to search tests...</div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- 3.2 Cart Section (Right Side) --}}
+                    <div class="col-md-7">
+                        <div class="card h-100 mb-0">
                     <div class="card-header py-2">
                         <h5 class="card-title fs-13 mb-0"><i class="feather-shopping-cart me-2 text-primary"></i>Lab
                             Tests / Packages</h5>
@@ -437,47 +494,7 @@
                                 ₹{{ number_format($subtotal, 2) }}</span>
                         </div>
                     </div>
-                    <div class="card-body pb-0 pt-2">
-                        <div class="position-relative mb-2" x-data="{ open: false }" wire:key="test-search-box"
-                            @click.away="open = false">
-                            <div class="input-group search-group shadow-sm">
-                                <span class="input-group-text"><i class="feather-search text-primary"></i></span>
-                                <input type="text" class="form-control fw-semibold"
-                                    wire:model.live.debounce.300ms="testSearch"
-                                    @focus="open = true; $wire.set('activeSearchField', 'test')" onclick="this.select()"
-                                    autocomplete="off" placeholder="Search Test Name, Profile, or Code...">
-                            </div>
-                            <div x-show="open" x-transition.opacity.duration.150ms style="display:none;">
-                                @if (!empty($tests) && count($tests) > 0)
-                                    <div class="list-group position-absolute shadow-lg mt-1 z-3 rounded-3 search-dropdown"
-                                        style="top:100%;left:0;">
-                                        @foreach ($tests as $test)
-                                            <button wire:click="addTestToCart({{ $test->id }})" @click="open = false"
-                                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 px-3">
-                                                <div>
-                                                    <span class="fw-bold text-dark fs-13">{{ $test->name }}</span>
-                                                    @if ($test->is_package)
-                                                        <span class="badge bg-primary ms-1 rounded-pill fs-10">PKG</span>
-                                                    @endif
-                                                    <div class="fs-11 text-muted">{{ $test->test_code ?? '' }} ·
-                                                        {{ $test->department ?? 'General' }}
-                                                    </div>
-                                                </div>
-                                                <span
-                                                    class="fw-bold text-success fs-14">₹{{ number_format($test->mrp, 0) }}</span>
-                                            </button>
-                                        @endforeach
-                                    </div>
-                                @elseif(!empty($testSearch))
-                                    <div class="position-absolute shadow-lg z-3 rounded-3 search-dropdown p-3 text-center"
-                                        style="top:100%;left:0;">
-                                        <div class="fw-bold text-muted fs-11"><i class="feather-search me-1"></i>No test
-                                            found for "{{ $testSearch }}"</div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                    <div class="card-body p-0">
 
                     {{-- Cart Table --}}
                     <div class="table-responsive">
@@ -600,204 +617,107 @@
                         </table>
                     </div>
                 </div>
+            </div> {{-- End Cart col-md-7 --}}
+        </div> {{-- End ROW 3 g-3 --}}
             </div>
 
-            {{-- ============== RIGHT COLUMN — Invoice Summary ============== --}}
-            <div class="col-xl-4">
-                <div class="card stretch stretch-full sticky-top" style="top:80px;">
-                    <div class="card-header bg-dark py-3">
-                        <h5 class="card-title text-white fs-13 mb-0"><i class="feather-edit-3 me-2"></i>Edit Summary
-                        </h5>
-                        <span
-                            class="badge bg-warning text-dark ms-auto fs-10">{{ $invoice->invoice_number ?? '' }}</span>
-                    </div>
-                    <div class="card-body py-3">
-
-                        {{-- Subtotal --}}
-                        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                            <span class="text-muted fw-semibold fs-12">Cart Subtotal</span>
-                            <span class="fw-bold text-dark fs-16">₹{{ number_format($subtotal, 0) }}</span>
-                        </div>
-
-                        {{-- Membership --}}
-                        @if ($active_membership)
-                            <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded-3 border pos-membership-box"
-                                style="border-color:rgba(59,113,202,0.2)!important;">
-                                <div>
-                                    <span class="fw-bold text-primary fs-11"><i
-                                            class="feather-award me-1 fs-10"></i>{{ $active_membership['name'] ?? '' }}</span>
-                                    <span
-                                        class="d-block fs-10 text-muted">{{ number_format($active_membership['discount_percentage'] ?? 0, 0) }}%
-                                        {{ $membership_fee > 0 ? 'applied (new purchase)' : 'auto-applied' }}</span>
+            {{-- ============== BOTTOM INVOICE ============== --}}
+            <div class="col-12">
+                <div class="card bg-dark text-white shadow-lg mt-1 mb-4" style="position: sticky; bottom: 0; z-index: 1040;">
+                    <div class="card-body py-2 px-3">
+                        <div class="row align-items-center g-3">
+                            {{-- Totals --}}
+                            <div class="col-md-2 border-end border-secondary">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="text-light fs-10 text-uppercase fw-semibold">Subtotal</span>
+                                    <span class="fw-bold fs-13">₹{{ number_format($subtotal, 0) }}</span>
                                 </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="fw-bold fs-13" style="color:#198754;">-
-                                        ₹{{ number_format($membership_discount_amt, 0) }}</span>
-                                    <button wire:click="removeMembership" class="btn btn-sm text-danger p-0"
-                                        title="Remove Membership"><i class="feather-x-circle fs-14"></i></button>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-light fs-10 text-uppercase fw-semibold">Discount</span>
+                                    <span class="fw-bold fs-13 text-warning">- ₹{{ number_format($total_discount, 0) }}</span>
                                 </div>
                             </div>
-                        @elseif($selectedPatient)
-                            <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded-3 border"
-                                style="background:rgba(255,193,7,0.1);border-color:rgba(255,193,7,0.3)!important;">
-                                <span class="fw-bold fs-11" style="color:#8a6d00;"><i
-                                        class="feather-award me-1 fs-10"></i>No Membership</span>
-                                @if(auth()->user()->can('create marketing') || auth()->user()->collection_center_id)
-                                    <button wire:click="$set('isMembershipModalOpen', true)"
-                                        class="btn btn-sm btn-warning fw-bold fs-10 px-2 py-1" style="color:#000;"><i
-                                            class="feather-plus fs-10 me-1"></i>Buy</button>
-                                @endif
-                            </div>
-                        @endif
-
-                        {{-- Membership Fee --}}
-                        @if ($membership_fee > 0)
-                            <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded-3 border"
-                                style="background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.2)!important;">
-                                <div>
-                                    <span class="fw-bold fs-11" style="color:#7c3aed;"><i
-                                            class="feather-credit-card me-1 fs-10"></i>Membership Fee</span>
-                                </div>
-                                <span class="fw-bold fs-13" style="color:#7c3aed;">+
-                                    ₹{{ number_format($membership_fee, 0) }}</span>
-                            </div>
-                        @endif
-
-                        {{-- Voucher --}}
-                        <div class="mb-2">
-                            @if ($applied_voucher)
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded-3 border pos-voucher-box"
-                                    style="border-color:rgba(25,135,84,0.25)!important;">
-                                    <span class="fw-bold fs-11" style="color:#198754;"><i
-                                            class="feather-tag me-1 fs-10"></i>{{ $applied_voucher->code }}</span>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span class="fw-bold fs-12" style="color:#198754;">-
-                                            ₹{{ number_format($voucher_discount_amt, 0) }}</span>
-                                        <button wire:click="removeVoucher" class="btn btn-sm text-danger p-0"><i
-                                                class="feather-x-circle fs-14"></i></button>
+                            
+                            {{-- Voucher & Discount --}}
+                            <div class="col-md-4 border-end border-secondary">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control fw-bold text-uppercase" wire:model.defer="voucher_code" placeholder="VOUCHER" {{ $applied_voucher ? 'disabled' : '' }}>
+                                            @if($applied_voucher)
+                                                <button wire:click="removeVoucher" class="btn btn-danger px-2"><i class="feather-x"></i></button>
+                                            @else
+                                                <button wire:click="applyVoucher" class="btn btn-primary px-2 fw-bold">APPLY</button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <select class="form-select fw-bold shadow-none" wire:model.live="discount_type" style="max-width: 60px; padding-left: 8px; border-right: 0;">
+                                                <option value="fixed">₹</option>
+                                                <option value="percentage">%</option>
+                                            </select>
+                                            <input type="number" class="form-control fw-bold shadow-none" wire:model.live.debounce.500ms="discount_amount" min="0" placeholder="Discount">
+                                        </div>
                                     </div>
                                 </div>
-                            @else
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control text-uppercase fw-bold fs-11"
-                                        wire:model="voucher_code" placeholder="VOUCHER CODE">
-                                    <button wire:click="applyVoucher" class="btn btn-dark fw-bold px-3 fs-11">APPLY</button>
-                                </div>
-                                @error('voucher_code')
-                                    <span class="text-danger fs-10 fw-semibold mt-1 d-block">{{ $message }}</span>
-                                @enderror
-                            @endif
-                        </div>
-
-                        {{-- Manual Discount --}}
-                        <div class="p-2 rounded-3 bg-gray-100 border mb-2">
-                            <label class="form-label fs-10 text-muted fw-bold text-uppercase mb-1">Manual
-                                Discount</label>
-                            <div class="input-group input-group-sm">
-                                <select class="form-select fw-bold" wire:model.live="manual_discount_type"
-                                    style="max-width:90px;">
-                                    <option value="flat">₹ Flat</option>
-                                    <option value="percent">%</option>
-                                </select>
-                                <input type="number" class="form-control text-end fw-bold"
-                                    wire:model.live.debounce.500ms="manual_discount_input" onclick="this.select()"
-                                    placeholder="0">
-                            </div>
-                            @if ($manual_discount_amt > 0)
-                                <div class="text-end text-success fs-10 fw-bold mt-1">-
-                                    ₹{{ number_format($manual_discount_amt, 0) }}</div>
-                            @endif
-                        </div>
-
-                        {{-- Total Discount --}}
-                        @if ($total_discount > 0)
-                            <div class="d-flex justify-content-between align-items-center mb-1 fs-11">
-                                <span class="text-muted">Total Savings</span>
-                                <span class="fw-bold text-success">- ₹{{ number_format($total_discount, 0) }}</span>
-                            </div>
-                        @endif
-
-                        <hr class="my-2">
-
-                        {{-- NET PAYABLE --}}
-                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 border"
-                            style="background:rgba(59,113,202,0.08);border-color:rgba(59,113,202,0.25)!important;">
-                            <span class="fs-13 fw-bold text-primary text-uppercase">NET PAYABLE</span>
-                            <span class="fs-2 fw-bold text-primary">₹{{ number_format($net_payable, 0) }}</span>
-                        </div>
-
-                        {{-- Payment --}}
-                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-                            <h6 class="fw-bold text-dark fs-11 text-uppercase mb-0"><i
-                                    class="feather-credit-card me-1"></i>Payment</h6>
-                            @can('edit settings')
-                                <button wire:click="$set('isPaymentModeModalOpen', true)"
-                                    class="btn btn-sm btn-outline-dark fs-10 py-0 px-2"><i
-                                        class="feather-plus fs-10 me-1"></i>Mode</button>
-                            @endcan
-                        </div>
-
-                        @foreach ($payments as $index => $payment)
-                            <div class="d-flex gap-2 mb-2 align-items-center">
-                                <div style="width:40%;">
-                                    <select class="form-select form-select-sm fw-medium @error('payments.'.$index.'.mode_id') is-invalid @enderror" wire:model.live="payments.{{ $index }}.mode_id">
-                                        <option value="">Mode</option>
-                                        @foreach ($paymentModes as $mode)
-                                            <option value="{{ $mode->id }}">{{ $mode->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('payments.'.$index.'.mode_id')
-                                        <div class="invalid-feedback fs-10 fw-bold">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="flex-grow-1">
-                                    <input type="number" class="form-control form-control-sm fw-bold text-end @error('payments.'.$index.'.amount') is-invalid @enderror" wire:model.live.debounce.500ms="payments.{{ $index }}.amount" onclick="this.select()" placeholder="₹ Amount">
-                                    @error('payments.'.$index.'.amount')
-                                        <div class="invalid-feedback fs-10 fw-bold">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                @if (count($payments) > 1)
-                                    <button wire:click="removePaymentRow({{ $index }})" class="btn btn-sm text-danger p-0 ms-1"><i class="feather-trash-2 fs-14"></i></button>
+                                @if($active_membership)
+                                    <div class="mt-1 fs-10 text-info fw-bold"><i class="feather-award me-1"></i>{{ $active_membership['name'] }} applied</div>
                                 @endif
                             </div>
-                        @endforeach
-                        <button wire:click="addPaymentRow"
-                            class="btn btn-sm btn-outline-primary w-100 mt-1 fs-10 fw-bold"><i
-                                class="feather-plus me-1"></i>Split Payment</button>
-
-                        {{-- Overpayment Error --}}
-                        @if ($overpaymentError)
-                            <div class="alert alert-danger py-2 mt-2 mb-0 d-flex align-items-center gap-2">
-                                <i class="feather-alert-octagon fs-14"></i>
-                                <span class="fs-11 fw-bold">Payment exceeds Net Payable!</span>
+                            
+                            {{-- Net Payable --}}
+                            <div class="col-md-2 border-end border-secondary text-center">
+                                <div class="text-light fs-11 text-uppercase fw-bold mb-1 letter-spacing-1">Net Payable</div>
+                                <div class="fs-2 fw-bolder text-success" style="line-height: 1;">₹{{ number_format($net_payable, 0) }}</div>
                             </div>
-                        @endif
-
-                        {{-- Due --}}
-                        <div class="d-flex justify-content-between align-items-center mt-3 p-2 rounded-3 border"
-                            style="background:{{ $due_amount > 0 ? 'rgba(220,53,69,0.08)' : 'rgba(25,135,84,0.08)' }};border-color:{{ $due_amount > 0 ? 'rgba(220,53,69,0.25)' : 'rgba(25,135,84,0.25)' }}!important;">
-                            <span class="fw-bold fs-12"
-                                style="color:{{ $due_amount > 0 ? '#dc3545' : '#198754' }};">{{ $due_amount > 0 ? 'Balance Due' : 'Fully Paid' }}</span>
-                            <span class="fw-bold fs-2"
-                                style="color:{{ $due_amount > 0 ? '#dc3545' : '#198754' }};">₹{{ number_format($due_amount, 0) }}</span>
-                        </div>
-
-                        {{-- Update --}}
-                        <div class="d-flex gap-2 mt-3 text-center">
-                            <button wire:click="updateBill" class="btn btn-primary flex-grow-1 py-3 fw-bold fs-13"
-                                @if ($overpaymentError) disabled @endif>
-                                <span wire:loading.remove wire:target="updateBill"><i class="feather-save me-1"></i>UPDATE
-                                    INVOICE</span>
-                                <span wire:loading wire:target="updateBill"><span
-                                        class="spinner-border spinner-border-sm me-1"></span>SAVING...</span>
-                            </button>
-                            @if($invoice->status !== 'Cancelled' && !in_array($invoice->sample_status, ['Processing', 'Ready']))
-                                <button onclick="confirm('Are you sure you want to CANCEL this invoice? This action will VOID the invoice and REVERSE all credited commissions in Doctor/Agent wallets.') || event.stopImmediatePropagation()" 
-                                    wire:click="cancelInvoice" class="btn btn-outline-danger px-3 d-flex align-items-center gap-2" title="Cancel Invoice">
-                                    <i class="feather-x-circle fs-16"></i>
-                                    <span class="fw-bold fs-11 text-uppercase">Cancel</span>
-                                </button>
-                            @endif
+                            
+                            {{-- Action / Payment --}}
+                            <div class="col-md-4">
+                                <div class="mb-2" style="max-height: 80px; overflow-y: auto;">
+                                    @foreach ($payments as $index => $payment)
+                                    <div class="input-group input-group-sm mb-1">
+                                        <select class="form-select fw-bold shadow-none" wire:model.live="payments.{{ $index }}.mode_id" style="max-width: 140px;">
+                                            <option value="">Payment Mode</option>
+                                            @foreach($paymentModes as $mode)
+                                                <option value="{{ $mode->id }}">{{ $mode->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($loop->first)
+                                            @can('edit settings')
+                                                <button wire:click="$set('isPaymentModeModalOpen', true)" class="btn btn-primary px-2" title="Add Payment Mode"><i class="feather-plus"></i></button>
+                                            @endcan
+                                        @endif
+                                        <input type="number" class="form-control fw-bold text-success shadow-none @error('payments.'.$index.'.amount') is-invalid @enderror" wire:model.live.debounce.300ms="payments.{{ $index }}.amount" placeholder="Amount">
+                                        @if(count($payments) > 1)
+                                            <button wire:click="removePaymentRow({{ $index }})" class="btn btn-danger px-2"><i class="feather-trash-2"></i></button>
+                                        @endif
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <div class="flex-shrink-0">
+                                        <button wire:click="addPaymentRow" class="btn btn-outline-light btn-sm fw-bold h-100"><i class="feather-plus"></i> Split</button>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <button wire:click="updateBill" class="btn btn-success btn-sm w-100 fw-bolder fs-12 text-uppercase letter-spacing-1 h-100" @if ($overpaymentError || empty($cart)) disabled @endif>
+                                            <i class="feather-check-circle me-1"></i> Update
+                                        </button>
+                                    </div>
+                                    @if($invoice->status !== 'Cancelled' && !in_array($invoice->sample_status, ['Processing', 'Ready']))
+                                    <div class="flex-shrink-0">
+                                        <button onclick="confirm('Are you sure you want to CANCEL this invoice? This action will VOID the invoice and REVERSE all credited commissions in Doctor/Agent wallets.') || event.stopImmediatePropagation()" 
+                                            wire:click="cancelInvoice" class="btn btn-danger btn-sm h-100 d-flex align-items-center gap-2" title="Cancel Invoice">
+                                            <i class="feather-x-circle fs-14"></i>
+                                            <span class="fw-bold fs-11 text-uppercase">Cancel</span>
+                                        </button>
+                                    </div>
+                                    @endif
+                                </div>
+                                @if ($overpaymentError)
+                                    <div class="text-danger fs-10 fw-bold mt-1 text-center">Payment exceeds Net Payable!</div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
