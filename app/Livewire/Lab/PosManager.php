@@ -541,6 +541,18 @@ class PosManager extends Component
         $this->calculateTotals();
     }
 
+    public function updatedDiscountAmount($value)
+    {
+        $this->manual_discount_input = $value;
+        $this->calculateTotals();
+    }
+
+    public function updatedDiscountType($value)
+    {
+        $this->manual_discount_type = in_array($value, ['percentage', 'percent']) ? 'percent' : 'flat';
+        $this->calculateTotals();
+    }
+
     public function updatedPayments()
     {
         $this->calculateTotals();
@@ -560,7 +572,7 @@ class PosManager extends Component
         $itemTotal = collect($this->cart)->sum(fn($item) => (float) ($item['price'] ?? 0));
 
         // 3. Implicit Item Discount (e.g. if price was manually reduced per line)
-        $itemDiscount = $this->subtotal - $itemTotal;
+        $itemDiscount = max($this->subtotal - $itemTotal, 0);
 
         $running = $itemTotal;
 
@@ -589,20 +601,25 @@ class PosManager extends Component
 
         // 6. Manual Overall Discount
         $this->manual_discount_amt = 0;
-        $manualVal = (float) $this->manual_discount_input;
+        $manualVal = (float) ($this->manual_discount_input ?? 0);
         if ($manualVal > 0 && $running > 0) {
-            $calcManual = $this->manual_discount_type === 'percent' ? ($running * $manualVal) / 100 : $manualVal;
+            $isPercent = in_array($this->manual_discount_type, ['percent', 'percentage']);
+            $calcManual = $isPercent ? ($running * $manualVal) / 100 : $manualVal;
             $this->manual_discount_amt = min($calcManual, $running);
             $running -= $this->manual_discount_amt;
         }
 
         // 7. Net Payable
-        $this->net_payable = max($running, 0) + $this->membership_fee;
+        $this->net_payable = max($running, 0) + (float)$this->membership_fee;
 
         // 8. Total Savings shown in UI (Implicit + Explicit)
         $this->total_discount = $itemDiscount + $this->membership_discount_amt + $this->voucher_discount_amt + $this->manual_discount_amt;
 
-        // 9. Due calculation
+        // 9. Due calculation & single payment sync
+        if (count($this->payments) === 1 && (!isset($this->payments[0]['amount']) || (float)$this->payments[0]['amount'] > $this->net_payable || (float)$this->payments[0]['amount'] == 0)) {
+            $this->payments[0]['amount'] = $this->net_payable > 0 ? $this->net_payable : null;
+        }
+
         $totalCollected = collect($this->payments)->sum(fn($p) => (float) ($p['amount'] ?? 0));
         $this->due_amount = max($this->net_payable - $totalCollected, 0);
         $this->overpaymentError = $totalCollected > $this->net_payable;

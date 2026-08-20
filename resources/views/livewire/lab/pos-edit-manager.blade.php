@@ -687,11 +687,11 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="input-group input-group-sm">
-                                            <select class="form-select fw-bold shadow-none" wire:model.live="discount_type" style="max-width: 60px; padding-left: 8px; border-right: 0;">
-                                                <option value="fixed">₹</option>
-                                                <option value="percentage">%</option>
+                                            <select class="form-select fw-bold shadow-none" wire:model.live="manual_discount_type" wire:change="calculateTotals" style="max-width: 60px; padding-left: 8px; border-right: 0;">
+                                                <option value="flat">₹</option>
+                                                <option value="percent">%</option>
                                             </select>
-                                            <input type="number" class="form-control fw-bold shadow-none" wire:model.live.debounce.500ms="discount_amount" min="0" placeholder="Discount">
+                                            <input type="number" step="any" class="form-control fw-bold shadow-none" wire:model.live.debounce.300ms="manual_discount_input" wire:keyup="calculateTotals" min="0" placeholder="Discount">
                                         </div>
                                     </div>
                                 </div>
