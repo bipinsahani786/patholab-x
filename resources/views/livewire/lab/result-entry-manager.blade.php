@@ -206,13 +206,33 @@
                                             </tr>
                                         @endif
 
+                                        @php $currentGroup = null; @endphp
                                         @foreach($params as $p)
                                              @php
                                                  $paramKey = $p['key'];
                                                  $isHigh = $highlights[$paramKey] ?? false;
+                                                 $paramGroup = $p['group'] ?? '';
                                              @endphp
+
+                                             {{-- Group Header: show when entering a new group --}}
+                                             @if(!empty($paramGroup) && $paramGroup !== $currentGroup)
+                                                 @if(!empty($currentGroup))
+                                                     {{-- Close previous group --}}
+                                                     <tr><td colspan="5" style="padding: 0; border-top: 1px solid #cbd5e1;"></td></tr>
+                                                 @endif
+                                                 <tr style="background: #f1f5f9;">
+                                                     <td colspan="5" class="fw-bold fs-12 py-2 ps-3" style="color: #0f172a; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; letter-spacing: 0.5px;">
+                                                         <i class="feather-layers me-2 text-primary"></i>{{ strtoupper($paramGroup) }}
+                                                     </td>
+                                                 </tr>
+                                             @elseif(empty($paramGroup) && !empty($currentGroup))
+                                                 {{-- Close group when exiting to ungrouped params --}}
+                                                 <tr><td colspan="5" style="padding: 0; border-top: 1px solid #cbd5e1;"></td></tr>
+                                             @endif
+                                             @php $currentGroup = $paramGroup; @endphp
+
                                              <tr class="{{ $isHigh ? 'table-danger' : '' }}" wire:key="param-{{ $paramKey }}">
-                                                 <td class="fw-bold fs-12 ps-4">
+                                                 <td class="fw-bold fs-12 {{ !empty($paramGroup) ? 'ps-5' : 'ps-4' }}">
                                                      <div class="d-flex align-items-center">
                                                          {{ $p['name'] }}
                                                          @if($isHigh)
@@ -267,6 +287,10 @@
                                                  </td>
                                              </tr>
                                          @endforeach
+                                         {{-- Close any remaining open group --}}
+                                         @if(!empty($currentGroup))
+                                             <tr><td colspan="5" style="padding: 0; border-top: 1px solid #cbd5e1;"></td></tr>
+                                         @endif
 
                                         {{-- Granular Remark Editor (Inside Test Loop) --}}
                                         <tr wire:key="remark-{{ $itemId }}-{{ $labTestId }}">

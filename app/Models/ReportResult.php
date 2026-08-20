@@ -15,6 +15,7 @@ class ReportResult extends Model
         'parameter_name',
         'short_code',
         'method',
+        'group',
         'result_value',
         'status',
         'is_highlighted',

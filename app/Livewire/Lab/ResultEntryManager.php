@@ -164,6 +164,7 @@ class ResultEntryManager extends Component
                             'options' => $param['options'] ?? [],
                             'formula' => $param['formula'] ?? '',
                             'method' => $param['method'] ?? '',
+                            'group' => $param['group'] ?? '',
                             'ref_range' => $refText,
                             'matched_range_details' => $matchedRange,
                             'department' => $test->department,
@@ -525,6 +526,7 @@ class ResultEntryManager extends Component
                     'reference_range' => $details['ref_range'],
                     'unit' => $details['unit'],
                     'method' => $details['method'] ?? null,
+                    'group' => $details['group'] ?? null,
                 ]
             );
         }

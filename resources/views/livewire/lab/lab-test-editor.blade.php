@@ -112,6 +112,7 @@
                                             <th class="ps-3 py-3" style="width: 40px;"></th>
                                             <th style="min-width: 180px;">Param Name</th>
                                             <th style="width: 80px;">Code</th>
+                                            <th style="min-width: 120px;">Group</th>
                                             <th style="min-width: 140px;">Method</th>
                                             <th style="min-width: 120px;">Input</th>
                                             <th style="min-width: 250px;">Reference & Units</th>
@@ -146,6 +147,10 @@
                                                     <input type="text" class="form-control form-control-sm text-center fw-bold bg-white" 
                                                         style="border: 1px solid #0d6efd; color: #0d6efd; min-width: 60px;"
                                                         wire:model="parameters.{{ $index }}.short_code" placeholder="CODE">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" style="border-color: #e9a800; background: #fffdf5;"
+                                                        wire:model="parameters.{{ $index }}.group" placeholder="e.g. DLC">
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control form-control-sm" 
@@ -208,18 +213,23 @@
                                                     <i class="feather-trash-2"></i>
                                                 </button>
                                             </div>
-                                            {{-- Row 2: Code + Method --}}
+                                            {{-- Row 2: Code + Method + Group --}}
                                             <div class="row g-2 mb-2">
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <label class="fs-10 text-muted text-uppercase fw-bold d-block mb-1">Code</label>
                                                     <input type="text" class="form-control form-control-sm text-center fw-bold bg-white" 
                                                         style="border: 1px solid #0d6efd; color: #0d6efd;"
                                                         wire:model="parameters.{{ $index }}.short_code" placeholder="CODE">
                                                 </div>
-                                                <div class="col-8">
+                                                <div class="col-5">
                                                     <label class="fs-10 text-muted text-uppercase fw-bold d-block mb-1">Method</label>
                                                     <input type="text" class="form-control form-control-sm" 
                                                         wire:model="parameters.{{ $index }}.method" placeholder="e.g. CLIA, HPLC">
+                                                </div>
+                                                <div class="col-4">
+                                                    <label class="fs-10 text-muted text-uppercase fw-bold d-block mb-1">Group</label>
+                                                    <input type="text" class="form-control form-control-sm" style="border-color: #e9a800; background: #fffdf5;"
+                                                        wire:model="parameters.{{ $index }}.group" placeholder="e.g. DLC">
                                                 </div>
                                             </div>
                                             {{-- Row 3: Input Type + Unit + Config --}}

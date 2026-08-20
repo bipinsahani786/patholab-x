@@ -743,13 +743,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php $hasSubHeaders = false; @endphp
+                        @php $hasSubHeaders = false; $currentGroup = null; @endphp
 
                         @foreach($results as $r)
                             @php
                                 // Detect sub-header: no result value AND no reference range
                                 $isSubHeader = (is_null($r->result_value) || trim($r->result_value) === '')
                                     && (is_null($r->reference_range) || trim($r->reference_range) === '');
+
+                                // Group tracking
+                                $paramGroup = $r->group ?? '';
 
                                 // Determine flag
                                 $flag = null;
@@ -766,6 +769,25 @@
                                 $isAbnormal = $r->is_highlighted;
                             @endphp
 
+                            {{-- ── Group Header: show when entering a new group ── --}}
+                            @if(!empty($paramGroup) && $paramGroup !== $currentGroup)
+                                @if(!empty($currentGroup))
+                                    {{-- Close previous group --}}
+                                    <tr><td colspan="5" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                                @endif
+                                <tr class="sub-hdr">
+                                    <td colspan="5" style="padding: 5px 8px 4px; font-weight: 700; font-size: {{ $sz10 }}; color: #0f172a; background: #f8fafc; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        {{ strtoupper($paramGroup) }}
+                                    </td>
+                                </tr>
+                                @php $hasSubHeaders = true; @endphp
+                            @elseif(empty($paramGroup) && !empty($currentGroup))
+                                {{-- Close group when exiting to ungrouped params --}}
+                                <tr><td colspan="5" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                                @php $hasSubHeaders = false; @endphp
+                            @endif
+                            @php $currentGroup = $paramGroup; @endphp
+
                             @if($isSubHeader)
                                 {{-- ── Sub-Header Row ── --}}
                                 @php $hasSubHeaders = true; @endphp
@@ -774,8 +796,9 @@
                                 </tr>
                             @else
                                 {{-- ── Parameter Row ── --}}
-                                <tr class="{{ $hasSubHeaders ? 'param-indent' : '' }}">
-                                    <td class="{{ $isAbnormal ? 'result-bold' : '' }}">
+                                @php $inGroup = !empty($paramGroup); @endphp
+                                <tr class="{{ ($hasSubHeaders || $inGroup) ? 'param-indent' : '' }}">
+                                    <td class="{{ $isAbnormal ? 'result-bold' : '' }}" style="{{ $inGroup ? 'padding-left: 20px;' : '' }}">
                                         {{ strtoupper($r->parameter_name) }}
                                         @if(($settings['pdf_show_test_method'] ?? true) && $r->method)
                                             <div
@@ -831,6 +854,10 @@
                                 </tr>
                             @endif
                         @endforeach
+                        {{-- Close any remaining open group --}}
+                        @if(!empty($currentGroup))
+                            <tr><td colspan="5" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                        @endif
                     </tbody>
                 </table>
 

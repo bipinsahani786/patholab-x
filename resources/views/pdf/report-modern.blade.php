@@ -446,9 +446,31 @@
                             @endif
                         </td>
                     </tr>
+                    @php $currentGroup = null; @endphp
                     @foreach($results as $r)
+                        @php
+                            $paramGroup = $r->group ?? '';
+                        @endphp
+                        {{-- ── Group Header: show when entering a new group ── --}}
+                        @if(!empty($paramGroup) && $paramGroup !== $currentGroup)
+                            @if(!empty($currentGroup))
+                                {{-- Close previous group --}}
+                                <tr><td colspan="4" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                            @endif
+                            <tr class="sub-hdr">
+                                <td colspan="4" style="padding: 5px 8px 4px; font-weight: 700; font-size: 10px; color: #0f172a; background: #f8fafc; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    {{ strtoupper($paramGroup) }}
+                                </td>
+                            </tr>
+                        @elseif(empty($paramGroup) && !empty($currentGroup))
+                            {{-- Close group when exiting to ungrouped params --}}
+                            <tr><td colspan="4" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                        @endif
+                        @php $currentGroup = $paramGroup; @endphp
+
+                        @php $inGroup = !empty($paramGroup); @endphp
                         <tr>
-                            <td style="padding-left: 15px;">
+                            <td style="padding-left: {{ $inGroup ? '30px' : '15px' }};">
                                 <div>{{ $r->parameter_name }}</div>
                                 @if(($settings['pdf_show_test_method'] ?? true) && $r->method)
                                     <div style="font-size: 8px; color: #777; font-style: italic;">Method: {{ $r->method }}</div>
@@ -471,6 +493,9 @@
                             <td><span style="white-space: pre-line;">{{ $r->reference_range }}</span></td>
                         </tr>
                     @endforeach
+                    @if(!empty($currentGroup))
+                        <tr><td colspan="4" style="padding: 0; border-top: 1px solid #e2e8f0;"></td></tr>
+                    @endif
                     @if(($settings['report_show_note'] ?? true) && $labTest->description)
                         <tr style="page-break-inside: avoid;">
                             <td colspan="4" style="padding-left: 15px; padding-top: 5px; padding-bottom: 5px; font-size: 10px; color: #555;">

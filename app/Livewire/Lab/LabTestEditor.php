@@ -80,7 +80,7 @@ class LabTestEditor extends Component
                     'is_critical' => false,
                 ],
             ],
-            'short_code' => '', 'input_type' => 'numeric', 'formula' => '', 'method' => '',
+            'short_code' => '', 'input_type' => 'numeric', 'formula' => '', 'method' => '', 'group' => '',
         ];
     }
 

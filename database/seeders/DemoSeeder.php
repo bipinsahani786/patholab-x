@@ -594,6 +594,7 @@ class DemoSeeder extends Seeder
                                 'lab_test_id' => $test->id,
                                 'parameter_name' => $param['name'] ?? 'Result',
                                 'short_code' => $param['short_code'] ?? null,
+                                'group' => $param['group'] ?? null,
                                 'result_value' => $param['input_type'] === 'numeric' ? (string) rand(10, 100) : 'Normal',
                                 'unit' => $param['unit'] ?? '',
                                 'reference_range' => $param['general_range'] ?? '',
