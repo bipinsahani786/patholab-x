@@ -374,7 +374,15 @@
                 @endif
 
                 {{-- PARTNER PORTAL --}}
-                @if(!auth()->user()->patientProfile && auth()->user()->hasAnyRole(['doctor', 'agent', 'collection_center']))
+                @php
+                    $isPartnerSidebar = !auth()->user()->patientProfile && (
+                        auth()->user()->hasAnyRole(['doctor', 'agent', 'collection_center']) || 
+                        auth()->user()->agentProfile || 
+                        auth()->user()->doctorProfile || 
+                        auth()->user()->collection_center_id
+                    );
+                @endphp
+                @if($isPartnerSidebar)
                     <li class="nxl-item nxl-caption"><label>Partner Portal</label></li>
                     <li class="nxl-item {{ request()->routeIs('partner.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('partner.dashboard') }}" wire:navigate class="nxl-link">
