@@ -309,17 +309,41 @@
                                                      @endcan
                                                      
                                                       @if($invoice->testReport && $invoice->testReport->status === 'Draft')
-                                                         <div class="dropdown">
+                                                         <div class="dropdown" x-data="{ printAll: false }">
                                                              <button class="action-btn action-btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport">
                                                                  <i class="feather-printer"></i>
                                                              </button>
-                                                             <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-1" style="min-width: 240px; width: max-content !important;">
-                                                                 <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-3 py-2">Draft Options</li>
-                                                                 <li><button type="button" class="dropdown-item fs-12 py-2 text-nowrap" wire:click="printCompleted({{ $invoice->id }}, 1)"><i class="feather-file-text me-2 text-primary"></i> Print All Completed</button></li>
-                                                                 <li><hr class="dropdown-divider my-1"></li>
-                                                                 <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-3">Print Selected</li>
-                                                                 <li><button type="button" class="dropdown-item fs-12 text-success py-2 text-nowrap" wire:click="printSelected({{ $invoice->id }}, 1)"><i class="feather-check-square me-2"></i> With Header</button></li>
-                                                                 <li><button type="button" class="dropdown-item fs-12 text-dark py-2 text-nowrap" wire:click="printSelected({{ $invoice->id }}, 0)"><i class="feather-check-square me-2"></i> Without Header</button></li>
+                                                             <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 250px; width: max-content !important;">
+                                                                 <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-2 py-1">Draft Options</li>
+                                                                 <li><button type="button" class="dropdown-item fs-12 py-2 text-nowrap rounded-2 text-primary" wire:click="printCompleted({{ $invoice->id }}, 1)"><i class="feather-file-text me-2"></i> Print All Completed</button></li>
+                                                                 <li><hr class="dropdown-divider my-2"></li>
+                                                                 
+                                                                 <li class="px-2 py-1 mb-2">
+                                                                     <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-light" @click.stop style="background-color: #f8fafc !important;">
+                                                                         <label :for="'draft-chk-print-all-{{ $invoice->id }}'" class="fw-bold fs-11 text-uppercase mb-0 cursor-pointer user-select-none d-flex align-items-center gap-2" :class="printAll ? 'text-primary' : 'text-success'">
+                                                                             <i :class="printAll ? 'feather-file-text' : 'feather-check-square'"></i>
+                                                                             <span x-text="printAll ? 'PRINT ALL TESTS' : 'PRINT SELECTED TESTS'"></span>
+                                                                         </label>
+                                                                         <div class="form-check mb-0">
+                                                                             <input class="form-check-input cursor-pointer" type="checkbox" x-model="printAll" :id="'draft-chk-print-all-{{ $invoice->id }}'" style="cursor: pointer; width: 1.15em; height: 1.15em;">
+                                                                         </div>
+                                                                     </div>
+                                                                 </li>
+                                                                 <li>
+                                                                     <button type="button" 
+                                                                             class="dropdown-item fs-12 py-2 text-nowrap rounded-2 fw-semibold"
+                                                                             :class="printAll ? 'text-primary' : 'text-success'"
+                                                                             @click="printAll ? $wire.printReport({{ $invoice->id }}, 1) : $wire.printSelected({{ $invoice->id }}, 1)">
+                                                                         <i :class="printAll ? 'feather-file-text me-2' : 'feather-check-square me-2'"></i> With Header
+                                                                     </button>
+                                                                 </li>
+                                                                 <li>
+                                                                     <button type="button" 
+                                                                             class="dropdown-item fs-12 text-secondary py-2 text-nowrap rounded-2 fw-semibold"
+                                                                             @click="printAll ? $wire.printReport({{ $invoice->id }}, 0) : $wire.printSelected({{ $invoice->id }}, 0)">
+                                                                         <i class="feather-file me-2"></i> Without Header
+                                                                     </button>
+                                                                 </li>
                                                              </ul>
                                                          </div>
                                                      @endif
@@ -331,25 +355,45 @@
                                                      @endif
                                                  </div>
                                              @else
-                                                 <div class="dropdown">
+                                                 <div class="dropdown" x-data="{ printAll: false }">
                                                      <button class="action-btn-text dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport">
                                                          <i class="feather-printer"></i> Print / Edit
                                                      </button>
-                                                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-1" style="min-width: 240px; width: max-content !important;">
+                                                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 250px; width: max-content !important;">
                                                          @can('edit reports')
-                                                             <li><a class="dropdown-item fs-12 py-2 text-nowrap" href="{{ route('lab.reports.entry', $invoice->id) }}"><i class="feather-edit me-2 text-info"></i> Edit Results</a></li>
+                                                             <li><a class="dropdown-item fs-12 py-2 text-nowrap rounded-2" href="{{ route('lab.reports.entry', $invoice->id) }}"><i class="feather-edit me-2 text-info"></i> Edit Results</a></li>
                                                          @endcan
                                                          @if(auth()->user()->can('edit invoices') || (auth()->user()->collection_center_id && $invoice->collection_center_id === auth()->user()->collection_center_id))
-                                                             <li><a class="dropdown-item fs-12 py-2 text-nowrap" href="{{ route('lab.invoice.edit', $invoice->id) }}" wire:navigate><i class="feather-edit-3 me-2 text-warning"></i> Modify Invoice</a></li>
+                                                             <li><a class="dropdown-item fs-12 py-2 text-nowrap rounded-2" href="{{ route('lab.invoice.edit', $invoice->id) }}" wire:navigate><i class="feather-edit-3 me-2 text-warning"></i> Modify Invoice</a></li>
                                                          @endif
-                                                         <li><hr class="dropdown-divider my-1"></li>
-                                                         <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-3 py-2">Print All Tests</li>
-                                                         <li><button type="button" class="dropdown-item fs-12 text-primary py-2 text-nowrap" wire:click="printReport({{ $invoice->id }}, 1)"><i class="feather-file-text me-2"></i> With Header</button></li>
-                                                         <li><button type="button" class="dropdown-item fs-12 text-secondary py-2 text-nowrap" wire:click="printReport({{ $invoice->id }}, 0)"><i class="feather-file me-2"></i> Without Header</button></li>
-                                                         <li><hr class="dropdown-divider my-1"></li>
-                                                         <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-3 py-2">Print Selected Tests</li>
-                                                         <li><button type="button" class="dropdown-item fs-12 text-success py-2 text-nowrap" wire:click="printSelected({{ $invoice->id }}, 1)"><i class="feather-check-square me-2"></i> With Header</button></li>
-                                                         <li><button type="button" class="dropdown-item fs-12 text-dark py-2 text-nowrap" wire:click="printSelected({{ $invoice->id }}, 0)"><i class="feather-check-square me-2"></i> Without Header</button></li>
+                                                         <li><hr class="dropdown-divider my-2"></li>
+                                                         
+                                                         <li class="px-2 py-1 mb-2">
+                                                             <div class="d-flex align-items-center justify-content-between p-2 rounded-3 border bg-light" @click.stop style="background-color: #f8fafc !important;">
+                                                                 <label :for="'chk-print-all-{{ $invoice->id }}'" class="fw-bold fs-11 text-uppercase mb-0 cursor-pointer user-select-none d-flex align-items-center gap-2" :class="printAll ? 'text-primary' : 'text-success'">
+                                                                     <i :class="printAll ? 'feather-file-text' : 'feather-check-square'"></i>
+                                                                     <span x-text="printAll ? 'PRINT ALL TESTS' : 'PRINT SELECTED TESTS'"></span>
+                                                                 </label>
+                                                                 <div class="form-check mb-0">
+                                                                     <input class="form-check-input cursor-pointer" type="checkbox" x-model="printAll" :id="'chk-print-all-{{ $invoice->id }}'" style="cursor: pointer; width: 1.15em; height: 1.15em;">
+                                                                 </div>
+                                                             </div>
+                                                         </li>
+                                                         <li>
+                                                             <button type="button" 
+                                                                     class="dropdown-item fs-12 py-2 text-nowrap rounded-2 fw-semibold"
+                                                                     :class="printAll ? 'text-primary' : 'text-success'"
+                                                                     @click="printAll ? $wire.printReport({{ $invoice->id }}, 1) : $wire.printSelected({{ $invoice->id }}, 1)">
+                                                                 <i :class="printAll ? 'feather-file-text me-2' : 'feather-check-square me-2'"></i> With Header
+                                                             </button>
+                                                         </li>
+                                                         <li>
+                                                             <button type="button" 
+                                                                     class="dropdown-item fs-12 text-secondary py-2 text-nowrap rounded-2 fw-semibold"
+                                                                     @click="printAll ? $wire.printReport({{ $invoice->id }}, 0) : $wire.printSelected({{ $invoice->id }}, 0)">
+                                                                 <i class="feather-file me-2"></i> Without Header
+                                                             </button>
+                                                         </li>
                                                      </ul>
                                                  </div>
                                              @endif
