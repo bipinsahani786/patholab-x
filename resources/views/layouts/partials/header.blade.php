@@ -74,18 +74,27 @@
                 </div>
                 @endif
 
-                <div class="dropdown nxl-h-item" style="position: relative;">
+                <div class="dropdown nxl-h-item user-profile-dropdown" x-data="{ open: false }" @click.outside="open = false" style="position: relative;">
                     @php
                         $userPhoto = auth()->user()->details->profile_photo ?? null;
                         $avatarUrl = $userPhoto 
                             ? Storage::url($userPhoto) 
                             : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b71ca&color=fff&bold=true';
                     @endphp
-                    <a href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-display="static" role="button" data-bs-auto-close="outside">
+                    <a href="javascript:void(0);" @click="open = !open" role="button" class="d-flex align-items-center" style="cursor: pointer;">
                         <img src="{{ $avatarUrl }}" alt="user-image"
                             class="img-fluid user-avtar me-0 rounded-circle border border-white shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" />
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0" style="min-width: 280px; overflow: hidden; position: absolute; right: 0; left: auto; top: 100%; margin-top: 10px;">
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 transform scale-95"
+                         x-transition:enter-end="opacity-100 transform scale-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100 transform scale-100"
+                         x-transition:leave-end="opacity-0 transform scale-95"
+                         class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0 show" 
+                         style="min-width: 280px; overflow: hidden; position: absolute; right: 0; left: auto; top: calc(100% + 8px); z-index: 1065; display: none;"
+                         @click="open = false">
                         <div class="p-3 position-relative" style="background: linear-gradient(135deg, #0b1437 0%, #1a2a6c 100%) !important;">
                             <div class="position-absolute top-0 end-0 p-2 opacity-25">
                                 <i class="feather-user" style="font-size: 40px; color: white;"></i>
@@ -173,37 +182,14 @@
         .ls-2 { letter-spacing: 1px; }
         .transition-all { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* Dropdown Alignment: Eliminate hover 'dead zone' with a pseudo-element bridge */
+        /* Dropdown Alignment */
         .nxl-h-dropdown {
             margin-top: 10px !important;
             border: 1px solid rgba(0,0,0,0.05) !important;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
             border-radius: 12px !important;
-            overflow: visible !important; /* Allow pseudo-element to overflow for the hover bridge */
             background: white !important;
         }
-        
-        /* The Hover Bridge: Standardized for all header dropdowns */
-        .nxl-h-dropdown::before {
-            content: "";
-            position: absolute;
-            top: -20px; /* Increased coverage to ensure it overlaps the trigger */
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: transparent;
-            z-index: -1;
-        }
-
-        /* Explicitly keep dropdown open on hover for supported themes */
-        @media (min-width: 992px) {
-            .nxl-h-item.dropdown:hover > .dropdown-menu {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-
 
         /* Pulse Animation for Expiring Subscription */
         .pulse-once {

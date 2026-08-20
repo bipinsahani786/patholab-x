@@ -1,11 +1,10 @@
-<div class="nxl-h-item dropdown">
+<div class="nxl-h-item dropdown" x-data="{ open: false }" @click.outside="open = false" style="position: relative;">
     @if(auth()->user()->hasRole('lab_admin') || auth()->user()->hasRole('super_admin'))
         <a href="javascript:void(0);" 
+           @click="open = !open"
            class="nxl-head-link me-3 d-flex align-items-center gap-3 transition-all p-2 rounded-3 hover-bg-light" 
-           data-bs-toggle="dropdown" 
-           data-bs-display="static"
            role="button" 
-           data-bs-auto-close="outside" style="border: 1px dashed rgba(0,0,0,0.1);">
+           style="border: 1px dashed rgba(0,0,0,0.1); cursor: pointer;">
             
             <div class="d-flex flex-column align-items-end">
                 <span class="fs-9 fw-bold text-uppercase text-muted ls-1 mb-0">Workspace</span>
@@ -23,7 +22,15 @@
             </div>
         </a>
         
-        <div class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0 force-dropdown-down" style="min-width: 300px; overflow: hidden; position: absolute;">
+        <div x-show="open"
+             x-transition:enter="transition ease-out duration-150"
+             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-100"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-95"
+             class="dropdown-menu dropdown-menu-end shadow-xl border-0 rounded-4 p-0 show force-dropdown-down" 
+             style="min-width: 300px; overflow: hidden; position: absolute; right: 0; left: auto; top: calc(100% + 8px); z-index: 1065; display: none;">
             
             <!-- CURRENT WORKSPACE HERO -->
             <div class="p-3 position-relative" style="background: linear-gradient(135deg, #0b1437 0%, #1a2a6c 100%);">
@@ -60,6 +67,7 @@
                 <!-- ALL BRANCHES OPTION -->
                 <a href="javascript:void(0);" 
                    wire:click="switchBranch('all')" 
+                   @click="open = false"
                    class="d-flex align-items-center gap-2 p-2 rounded-2 mb-1 text-decoration-none transition-all {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'border border-primary bg-white shadow-sm' : 'border border-transparent hover-bg-white hover-shadow-sm' }}">
                     
                     <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 {{ ($activeBranchId === 'all' || !$activeBranchId) ? 'bg-primary text-white' : 'bg-soft-secondary text-secondary' }}" style="width: 28px; height: 28px;">
@@ -82,6 +90,7 @@
                         <div class="col-12">
                             <a href="javascript:void(0);" 
                                wire:click="switchBranch({{ $branch->id }})" 
+                               @click="open = false"
                                class="d-flex align-items-center gap-2 p-2 rounded-2 text-decoration-none transition-all {{ $activeBranchId == $branch->id ? 'border border-primary bg-white shadow-sm' : 'border border-light bg-white hover-shadow-sm' }}">
                                 
                                 <div class="rounded d-flex align-items-center justify-content-center flex-shrink-0 {{ $activeBranchId == $branch->id ? 'bg-primary text-white' : ($branch->type === 'main_lab' ? 'bg-soft-danger text-danger' : 'bg-soft-info text-info') }}" style="width: 28px; height: 28px;">
@@ -109,7 +118,7 @@
             
             <!-- FOOTER ACTION -->
             <div class="p-2 bg-white text-center border-top">
-                <a href="{{ route('lab.branches') }}" wire:navigate class="btn btn-light btn-sm w-100 fw-bold d-flex align-items-center justify-content-center gap-1" style="font-size: 11px; padding: 6px;">
+                <a href="{{ route('lab.branches') }}" wire:navigate @click="open = false" class="btn btn-light btn-sm w-100 fw-bold d-flex align-items-center justify-content-center gap-1" style="font-size: 11px; padding: 6px;">
                     <i class="feather-settings" style="font-size: 12px;"></i> Manage Branch Settings
                 </a>
             </div>
@@ -127,10 +136,9 @@
         
         /* Force Dropdown to always open downwards and ignore Popper.js upward transforms */
         .force-dropdown-down {
-            top: 100% !important;
+            top: calc(100% + 8px) !important;
             bottom: auto !important;
             transform: none !important;
-            margin-top: 10px !important;
             right: 0 !important;
             left: auto !important;
         }
