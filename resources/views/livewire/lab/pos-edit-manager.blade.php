@@ -42,6 +42,38 @@
         .rounded-3, .rounded-circle, .rounded-pill, .rounded {
             border-radius: 2px !important;
         }
+        /* Top 3 Search Boxes (Patient, Doctor, Agent) Highlight */
+        .pos-top-search-group {
+            border: 1.5px solid #000 !important;
+            border-radius: 4px !important;
+            overflow: hidden;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+        }
+        .pos-top-search-group .input-group-text {
+            background-color: #000 !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 0.25rem 0.5rem;
+        }
+        .pos-top-search-group .input-group-text i {
+            color: #fff !important;
+        }
+        .pos-top-search-group .form-control {
+            border: none !important;
+            background-color: #fff !important;
+            color: #000 !important;
+            font-weight: 500;
+        }
+        .pos-top-search-group .form-control:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+        .pos-top-search-group:focus-within {
+            border-color: #000 !important;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25) !important;
+        }
 </style>
 
     {{-- ======================== PAGE HEADER (Aligned with POS) ======================== --}}
@@ -137,18 +169,18 @@
                                     <div class="position-relative" x-data="{ open: false }" wire:key="patient-search-box"
                                         @click.away="open = false">
                                         <div class="d-flex gap-2 mb-1">
-                                            <div class="input-group input-group-sm flex-grow-1">
-                                                <span class="input-group-text bg-light"><i
-                                                        class="feather-search text-muted fs-12"></i></span>
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i
+                                                         class="feather-search fs-12"></i></span>
                                                 <input type="text" class="form-control"
-                                                    wire:model.live.debounce.300ms="patientSearch"
-                                                    @focus="open = true; $wire.set('activeSearchField', 'patient')"
-                                                    onclick="this.select()" autocomplete="off" placeholder="Phone / Name">
+                                                     wire:model.live.debounce.300ms="patientSearch"
+                                                     @focus="open = true; $wire.set('activeSearchField', 'patient')"
+                                                     onclick="this.select()" autocomplete="off" placeholder="Phone / Name">
                                             </div>
                                             @if(auth()->user()->can('create patients') || auth()->user()->collection_center_id)
                                                 <button wire:click="$set('isPatientModalOpen', true)" @click="open = false"
-                                                    class="btn btn-sm btn-primary px-2" title="New Patient"><i
-                                                        class="feather-user-plus fs-12"></i></button>
+                                                     class="btn btn-sm btn-primary px-2" title="New Patient"><i
+                                                         class="feather-user-plus fs-12"></i></button>
                                             @else
                                                 <button class="btn btn-sm btn-light px-2" disabled title="No Permission"><i class="feather-user-plus fs-12"></i></button>
                                             @endif
@@ -159,7 +191,7 @@
                                                     style="top:100%;left:0;">
                                                     @foreach ($patients as $pt)
                                                         <button wire:click="selectPatient({{ $pt->id }})" @click="open = false"
-                                                            class="list-group-item list-group-item-action py-2 px-3">
+                                                             class="list-group-item list-group-item-action py-2 px-3">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <div>
                                                                         <div class="fw-bold fs-12">{{ $pt->name }} <span class="badge bg-soft-info text-info ms-1">{{ $pt->formatted_id }}</span></div>
@@ -179,8 +211,8 @@
                                                         "{{ $patientSearch }}"</div>
                                                     @if(auth()->user()->can('create patients') || auth()->user()->collection_center_id)
                                                         <button wire:click="$set('isPatientModalOpen', true)" @click="open = false"
-                                                            class="btn btn-sm btn-primary mt-2 fw-bold fs-10"><i
-                                                                class="feather-user-plus me-1"></i>Register New</button>
+                                                             class="btn btn-sm btn-primary mt-2 fw-bold fs-10"><i
+                                                                 class="feather-user-plus me-1"></i>Register New</button>
                                                     @endif
                                                 </div>
                                             @endif
@@ -232,9 +264,9 @@
                                     <div class="position-relative" x-data="{ open: false }" wire:key="doctor-search-box"
                                         @click.away="open = false">
                                         <div class="d-flex gap-2 mb-1">
-                                            <div class="input-group input-group-sm flex-grow-1">
-                                                <span class="input-group-text bg-light"><i
-                                                        class="feather-search text-muted fs-12"></i></span>
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i
+                                                         class="feather-search fs-12"></i></span>
                                                 <input type="text" class="form-control"
                                                     wire:model.live.debounce.300ms="doctorSearch"
                                                     @focus="open = true; $wire.set('activeSearchField', 'doctor')"
@@ -253,7 +285,7 @@
                                                     style="top:100%;left:0;">
                                                     @foreach ($doctors as $doc)
                                                         <button wire:click="selectDoctor({{ $doc->id }})" @click="open = false"
-                                                            class="list-group-item list-group-item-action py-2 px-3">
+                                                             class="list-group-item list-group-item-action py-2 px-3">
                                                             <div class="fw-bold fs-12">{{ $doc->name }}</div>
                                                             <div class="text-muted fs-10">
                                                                 {{ $doc->doctorProfile->specialization ?? '' }} ·
@@ -321,13 +353,15 @@
                                 @else
                                     <div class="position-relative" x-data="{ open: false }" wire:key="agent-search-box"
                                         @click.away="open = false">
-                                        <div class="input-group input-group-sm">
-                                            <span class="input-group-text bg-light"><i
-                                                    class="feather-search text-muted fs-12"></i></span>
-                                            <input type="text" class="form-control"
-                                                wire:model.live.debounce.300ms="agentSearch"
-                                                @focus="open = true; $wire.set('activeSearchField', 'agent')"
-                                                onclick="this.select()" autocomplete="off" placeholder="Agent Name / Phone">
+                                        <div class="d-flex gap-2 mb-1">
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i
+                                                         class="feather-search fs-12"></i></span>
+                                                <input type="text" class="form-control"
+                                                    wire:model.live.debounce.300ms="agentSearch"
+                                                    @focus="open = true; $wire.set('activeSearchField', 'agent')"
+                                                    onclick="this.select()" autocomplete="off" placeholder="Agent Name / Phone">
+                                            </div>
                                             @if(auth()->user()->can('create agents') || auth()->user()->collection_center_id)
                                                 <button wire:click="$set('isAgentModalOpen', true)" @click="open = false"
                                                     class="btn btn-sm btn-warning px-2" title="New Agent"><i
@@ -340,7 +374,7 @@
                                                     style="top:100%;left:0;">
                                                     @foreach ($agents as $agt)
                                                         <button wire:click="selectAgent({{ $agt->id }})" @click="open = false"
-                                                            class="list-group-item list-group-item-action py-2 px-3">
+                                                             class="list-group-item list-group-item-action py-2 px-3">
                                                             <div class="fw-bold fs-12">{{ $agt->name }}</div>
                                                             <div class="text-muted fs-10">
                                                                 {{ $agt->agentProfile->agency_name ?? '' }} ·
@@ -356,8 +390,8 @@
                                                         agent found for "{{ $agentSearch }}"</div>
                                                     @if(auth()->user()->can('create agents') || auth()->user()->collection_center_id)
                                                         <button wire:click="$set('isAgentModalOpen', true)" @click="open = false"
-                                                            class="btn btn-sm btn-warning mt-1 fw-bold fs-10"><i
-                                                                class="feather-plus me-1"></i>Add New</button>
+                                                             class="btn btn-sm btn-warning mt-1 fw-bold fs-10"><i
+                                                                 class="feather-plus me-1"></i>Add New</button>
                                                     @endif
                                                 </div>
                                             @endif

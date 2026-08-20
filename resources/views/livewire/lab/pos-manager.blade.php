@@ -44,6 +44,38 @@
         .pos-membership-box, .pos-voucher-box {
             background: rgba(var(--bs-primary-rgb), 0.08);
         }
+        /* Top 3 Search Boxes (Patient, Doctor, Agent) Highlight */
+        .pos-top-search-group {
+            border: 1.5px solid #000 !important;
+            border-radius: 4px !important;
+            overflow: hidden;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+        }
+        .pos-top-search-group .input-group-text {
+            background-color: #000 !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 0.25rem 0.5rem;
+        }
+        .pos-top-search-group .input-group-text i {
+            color: #fff !important;
+        }
+        .pos-top-search-group .form-control {
+            border: none !important;
+            background-color: #fff !important;
+            color: #000 !important;
+            font-weight: 500;
+        }
+        .pos-top-search-group .form-control:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+        .pos-top-search-group:focus-within {
+            border-color: #000 !important;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25) !important;
+        }
     </style>
     {{-- ======================== PAGE HEADER ======================== --}}
     <div class="page-header">
@@ -126,8 +158,8 @@
                                 @else
                                     <div class="position-relative" x-data="{ open: false }" wire:key="patient-search-box" @click.away="open = false" @focusin="open = true; $wire.set('activeSearchField', 'patient')">
                                         <div class="d-flex gap-2 mb-1">
-                                            <div class="input-group input-group-sm flex-grow-1">
-                                                <span class="input-group-text bg-light"><i class="feather-search text-muted fs-12"></i></span>
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i class="feather-search fs-12"></i></span>
                                                 <input type="text" class="form-control" wire:model.live.debounce.300ms="patientSearch" 
                                                     @focus="open = true"
                                                     onclick="this.select()"
@@ -205,8 +237,8 @@
                                 @else
                                     <div class="position-relative" x-data="{ open: false }" wire:key="doctor-search-box" @click.away="open = false" @focusin="open = true; $wire.set('activeSearchField', 'doctor')">
                                         <div class="d-flex gap-2 mb-1">
-                                            <div class="input-group input-group-sm flex-grow-1">
-                                                <span class="input-group-text bg-light"><i class="feather-search text-muted fs-12"></i></span>
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i class="feather-search fs-12"></i></span>
                                                 <input type="text" class="form-control" wire:model.live.debounce.300ms="doctorSearch" 
                                                     @focus="open = true"
                                                     onclick="this.select()"
@@ -274,12 +306,14 @@
                                     </div>
                                 @else
                                     <div class="position-relative" x-data="{ open: false }" wire:key="agent-search-box" @click.away="open = false" @focusin="open = true; $wire.set('activeSearchField', 'agent')">
-                                        <div class="input-group input-group-sm">
-                                            <span class="input-group-text bg-light"><i class="feather-search text-muted fs-12"></i></span>
-                                            <input type="text" class="form-control" wire:model.live.debounce.300ms="agentSearch" 
-                                                @focus="open = true"
-                                                onclick="this.select()"
-                                                placeholder="Agent Name / Phone">
+                                        <div class="d-flex gap-2 mb-1">
+                                            <div class="input-group input-group-sm flex-grow-1 pos-top-search-group">
+                                                <span class="input-group-text"><i class="feather-search fs-12"></i></span>
+                                                <input type="text" class="form-control" wire:model.live.debounce.300ms="agentSearch" 
+                                                    @focus="open = true"
+                                                    onclick="this.select()"
+                                                    placeholder="Agent Name / Phone">
+                                            </div>
                                             @if(auth()->user()->can('create agents') || auth()->user()->collection_center_id)
                                                 <button wire:click="$set('isAgentModalOpen', true)" @click="open = false" class="btn btn-sm btn-warning px-2" title="New Agent"><i class="feather-plus fs-12"></i></button>
                                             @endif
