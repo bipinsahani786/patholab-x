@@ -290,13 +290,63 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if(!$invoice->testReport)
-                                            <span class="badge bg-soft-warning text-warning fs-10"><i class="feather-clock me-1"></i> Pending Entry</span>
-                                        @elseif($invoice->testReport->status === 'Draft')
-                                            <span class="badge bg-soft-info text-info fs-10"><i class="feather-edit-2 me-1"></i> Draft</span>
-                                        @elseif($invoice->testReport->status === 'Approved')
-                                            <span class="badge bg-soft-success text-success fs-10"><i class="feather-check-circle me-1"></i> Approved</span>
-                                        @endif
+                                        @can('edit reports')
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm p-0 border-0 dropdown-toggle d-inline-flex align-items-center shadow-none text-decoration-none" 
+                                                        type="button" 
+                                                        data-bs-toggle="dropdown" 
+                                                        data-bs-boundary="viewport"
+                                                        aria-expanded="false" 
+                                                        title="Click to change status"
+                                                        style="cursor: pointer;">
+                                                    @if(!$invoice->testReport || in_array($invoice->testReport->status, ['Pending']))
+                                                        <span class="badge bg-soft-warning text-warning fs-10 py-1 px-2 d-inline-flex align-items-center gap-1 border border-warning border-opacity-25">
+                                                            <i class="feather-clock"></i> Pending Entry <i class="feather-chevron-down ms-1" style="font-size: 9px;"></i>
+                                                        </span>
+                                                    @elseif($invoice->testReport->status === 'Draft')
+                                                        <span class="badge bg-soft-info text-info fs-10 py-1 px-2 d-inline-flex align-items-center gap-1 border border-info border-opacity-25">
+                                                            <i class="feather-edit-2"></i> Draft <i class="feather-chevron-down ms-1" style="font-size: 9px;"></i>
+                                                        </span>
+                                                    @elseif($invoice->testReport->status === 'Approved')
+                                                        <span class="badge bg-soft-success text-success fs-10 py-1 px-2 d-inline-flex align-items-center gap-1 border border-success border-opacity-25">
+                                                            <i class="feather-check-circle"></i> Approved <i class="feather-chevron-down ms-1" style="font-size: 9px;"></i>
+                                                        </span>
+                                                    @endif
+                                                </button>
+                                                <ul class="dropdown-menu shadow border-0 py-1" style="min-width: 155px; z-index: 1050; border-radius: 8px;">
+                                                    <li class="dropdown-header fw-bold fs-10 text-uppercase text-muted px-3 py-1">Change Status</li>
+                                                    <li>
+                                                        <button type="button" 
+                                                                class="dropdown-item py-2 px-3 fs-11 d-flex align-items-center gap-2 {{ (!$invoice->testReport || in_array($invoice->testReport->status, ['Pending'])) ? 'active fw-bold' : 'text-warning' }}" 
+                                                                wire:click="updateReportStatus({{ $invoice->id }}, 'Pending')">
+                                                            <i class="feather-clock"></i> Pending Entry
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" 
+                                                                class="dropdown-item py-2 px-3 fs-11 d-flex align-items-center gap-2 {{ ($invoice->testReport && $invoice->testReport->status === 'Draft') ? 'active fw-bold' : 'text-info' }}" 
+                                                                wire:click="updateReportStatus({{ $invoice->id }}, 'Draft')">
+                                                            <i class="feather-edit-2"></i> Draft
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" 
+                                                                class="dropdown-item py-2 px-3 fs-11 d-flex align-items-center gap-2 {{ ($invoice->testReport && $invoice->testReport->status === 'Approved') ? 'active fw-bold' : 'text-success' }}" 
+                                                                wire:click="updateReportStatus({{ $invoice->id }}, 'Approved')">
+                                                            <i class="feather-check-circle"></i> Approved
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @else
+                                            @if(!$invoice->testReport || in_array($invoice->testReport->status, ['Pending']))
+                                                <span class="badge bg-soft-warning text-warning fs-10"><i class="feather-clock me-1"></i> Pending Entry</span>
+                                            @elseif($invoice->testReport->status === 'Draft')
+                                                <span class="badge bg-soft-info text-info fs-10"><i class="feather-edit-2 me-1"></i> Draft</span>
+                                            @elseif($invoice->testReport->status === 'Approved')
+                                                <span class="badge bg-soft-success text-success fs-10"><i class="feather-check-circle me-1"></i> Approved</span>
+                                            @endif
+                                        @endcan
                                     </td>
                                      <td class="text-end">
                                          <div class="d-flex justify-content-end gap-2">

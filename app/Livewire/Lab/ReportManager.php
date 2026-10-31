@@ -209,7 +209,12 @@ class ReportManager extends Component
         // Status filter (Custom Logic based on TestReport existence/status)
         if ($this->statusFilter !== 'all') {
             if ($this->statusFilter === 'pending') {
-                $invoicesQuery->doesntHave('testReport');
+                $invoicesQuery->where(function ($q) {
+                    $q->doesntHave('testReport')
+                      ->orWhereHas('testReport', function ($rq) {
+                          $rq->where('status', 'Pending');
+                      });
+                });
             } elseif ($this->statusFilter === 'draft') {
                 $invoicesQuery->whereHas('testReport', function ($q) {
                     $q->where('status', 'Draft');
@@ -261,5 +266,92 @@ class ReportManager extends Component
     public function notifyMissingPhone()
     {
         $this->dispatch('notify', ['type' => 'error', 'message' => 'WhatsApp cannot be shared because the patient phone number is missing.']);
+    }
+
+    public function updateReportStatus($invoiceId, $newStatus)
+    {
+        $this->authorize('edit reports');
+
+        $invoice = Invoice::where('company_id', auth()->user()->company_id)
+            ->with(['items.labTest', 'testReport'])
+            ->findOrFail($invoiceId);
+
+        if ($newStatus === 'Approved') {
+            // Ensure all test items in this invoice are marked as Completed
+            $invoice->items()->where(function ($q) {
+                $q->whereNull('status')->orWhere('status', '!=', 'Completed');
+            })->update(['status' => 'Completed']);
+
+            // Find or create TestReport
+            $report = \App\Models\TestReport::firstOrCreate(
+                ['invoice_id' => $invoice->id],
+                [
+                    'company_id' => $invoice->company_id,
+                    'patient_id' => $invoice->patient_id,
+                    'status' => 'Approved',
+                    'approved_by' => auth()->id(),
+                    'approved_at' => now(),
+                    'report_date' => now(),
+                ]
+            );
+
+            if ($report->status !== 'Approved') {
+                $report->update([
+                    'status' => 'Approved',
+                    'approved_by' => auth()->id(),
+                    'approved_at' => now(),
+                    'report_date' => $report->report_date ?? now(),
+                ]);
+            }
+
+            $invoice->update(['sample_status' => 'Ready']);
+
+            try {
+                $pdfService = new \App\Services\PdfStorageService;
+                $pdfService->storeReportPdf($report);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Failed to pre-generate PDF: ' . $e->getMessage());
+            }
+
+            $msg = "Report #{$invoice->invoice_number} approved successfully.";
+            session()->flash('success', $msg);
+            $this->dispatch('notify', ['type' => 'success', 'message' => $msg]);
+        } elseif ($newStatus === 'Pending') {
+            if ($invoice->testReport) {
+                $invoice->testReport->update([
+                    'status' => 'Pending',
+                    'approved_by' => null,
+                    'approved_at' => null,
+                ]);
+            }
+            $invoice->update(['sample_status' => 'Pending']);
+
+            $msg = "Report #{$invoice->invoice_number} marked as Pending.";
+            session()->flash('success', $msg);
+            $this->dispatch('notify', ['type' => 'success', 'message' => $msg]);
+        } elseif ($newStatus === 'Draft') {
+            $report = \App\Models\TestReport::firstOrCreate(
+                ['invoice_id' => $invoice->id],
+                [
+                    'company_id' => $invoice->company_id,
+                    'patient_id' => $invoice->patient_id,
+                    'status' => 'Draft',
+                    'report_date' => now(),
+                ]
+            );
+
+            if ($report->status !== 'Draft') {
+                $report->update([
+                    'status' => 'Draft',
+                    'approved_by' => null,
+                    'approved_at' => null,
+                ]);
+            }
+            $invoice->update(['sample_status' => 'Processing']);
+
+            $msg = "Report #{$invoice->invoice_number} marked as Draft.";
+            session()->flash('success', $msg);
+            $this->dispatch('notify', ['type' => 'success', 'message' => $msg]);
+        }
     }
 }
