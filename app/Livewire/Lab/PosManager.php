@@ -54,6 +54,8 @@ class PosManager extends Component
 
     public $collection_type = 'Center';
 
+    public $invoice_date;
+
     public $expected_report_date;
 
     public $expected_report_time;
@@ -88,6 +90,8 @@ class PosManager extends Component
     public $manual_discount_input;
 
     public $manual_discount_amt = 0;
+
+    public $discount_remarks = '';
 
     public $total_discount = 0;
 
@@ -208,12 +212,10 @@ class PosManager extends Component
             $this->collection_center_id = $user->collection_center_id ?? (CollectionCenter::where('company_id', $companyId)->first()->id ?? null);
         }
 
-        $this->expected_report_date = date('Y-m-d');
-        $this->expected_report_time = date('H:i', strtotime('+24 hours'));
+        $this->invoice_date = now()->format('Y-m-d\TH:i');
         $this->sample_received_at = now()->format('Y-m-d\TH:i');
         $this->expected_report_date = date('Y-m-d');
         $this->expected_report_time = date('H:i', strtotime('+24 hours'));
-        $this->sample_received_at = now()->format('Y-m-d\TH:i');
         $this->addPaymentRow();
     }
 
@@ -1209,7 +1211,7 @@ class PosManager extends Component
                 'referred_by_agent_id' => $agentId,
                 'invoice_number' => $invoiceNumber,
                 'barcode' => $barcode,
-                'invoice_date' => now(),
+                'invoice_date' => $this->invoice_date ? \Carbon\Carbon::parse($this->invoice_date) : now(),
                 'sample_received_at' => $this->sample_received_at,
                 'expected_report_time' => $this->expected_report_date && $this->expected_report_time
                     ? $this->expected_report_date . ' ' . $this->expected_report_time
