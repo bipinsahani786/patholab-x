@@ -123,21 +123,11 @@
                                             <td colspan="5" class="bg-soft-primary py-2 fs-12 fw-bold text-dark border-bottom">
                                                 <div class="d-flex align-items-center justify-content-between px-2">
                                                     <div class="d-flex align-items-center">
-                                                        <input type="checkbox" class="form-check-input me-2" 
-                                                               wire:model.live="selectedTests" value="{{ $itemId }}">
                                                         <i class="feather-box text-primary me-2"></i>{{ $billItemName }} (Package)
-                                                        <span class="ms-2 badge {{ $isBillItemComplete ? 'bg-success' : 'bg-warning text-dark' }} fs-9">
-                                                            {{ $isBillItemComplete ? 'Completed' : 'Pending' }}
+                                                        <span class="ms-2 badge bg-success fs-9">
+                                                            Completed
                                                         </span>
                                                     </div>
-                                                    @can('edit reports')
-                                                        <button wire:click="toggleTestStatus({{ $itemId }})" 
-                                                                class="btn btn-xs {{ $isBillItemComplete ? 'btn-outline-danger' : 'btn-outline-success' }} py-0 px-2"
-                                                                style="font-size: 10px;">
-                                                            <i class="feather-{{ $isBillItemComplete ? 'x-circle' : 'check-circle' }} me-1"></i>
-                                                            Mark {{ $isBillItemComplete ? 'Pending' : 'Complete' }}
-                                                        </button>
-                                                    @endcan
                                                 </div>
                                             </td>
                                         </tr>
@@ -153,9 +143,6 @@
                                             <td colspan="5" class="bg-light py-2 fs-12 fw-bold text-dark border-bottom">
                                                 <div class="d-flex align-items-center justify-content-between px-3">
                                                     <div class="d-flex align-items-center">
-                                                        <input type="checkbox" class="form-check-input me-2" 
-                                                               wire:model.live="selectedTests" 
-                                                               value="{{ ($testItem->labTest->is_package ?? false) ? $itemId . '_' . $labTestId : $itemId }}">
                                                         <i class="feather-activity text-muted me-2"></i>{{ $testName }}
                                                         @php
                                                             $dlcCodes = ['NEU', 'LYM', 'MONO', 'EOS', 'BASO'];
@@ -174,23 +161,10 @@
                                                                 DLC Sum: {{ round($dlcSum, 2) }}%
                                                             </span>
                                                         @endif
-                                                        @if(!($testItem->labTest->is_package ?? false))
-                                                            <span class="ms-2 badge {{ $isBillItemComplete ? 'bg-success' : 'bg-warning text-dark' }} fs-9">
-                                                                {{ $isBillItemComplete ? 'Completed' : 'Pending' }}
-                                                            </span>
-                                                        @endif
+                                                        <span class="ms-2 badge bg-success fs-9">
+                                                            Completed
+                                                        </span>
                                                     </div>
-                                                    
-                                                    @if(!($testItem->labTest->is_package ?? false))
-                                                        @can('edit reports')
-                                                            <button wire:click="toggleTestStatus({{ $itemId }})" 
-                                                                    class="btn btn-xs {{ $isBillItemComplete ? 'btn-outline-danger' : 'btn-outline-success' }} py-0 px-2"
-                                                                    style="font-size: 10px;">
-                                                                <i class="feather-{{ $isBillItemComplete ? 'x-circle' : 'check-circle' }} me-1"></i>
-                                                                Mark {{ $isBillItemComplete ? 'Pending' : 'Complete' }}
-                                                            </button>
-                                                        @endcan
-                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

@@ -1254,6 +1254,7 @@ class PosManager extends Component
                     'mrp' => $item['mrp'],
                     'price' => $item['price'] ?? $item['mrp'],
                     'b2b_price' => data_get($testPrices->get($item['id']), 'b2b_price', 0),
+                    'status' => 'Completed',
                 ]);
             }
 

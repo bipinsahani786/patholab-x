@@ -1173,7 +1173,7 @@ class PosEditManager extends Component
                         'mrp' => $item['mrp'],
                         'price' => $item['price'],
                         'b2b_price' => data_get($testPrices->get($labTestId), 'b2b_price', 0),
-                        'status' => 'Pending',
+                        'status' => 'Completed',
                     ]);
                     $keptItemIds[] = $newItem->id;
                 }

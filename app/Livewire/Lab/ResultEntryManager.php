@@ -42,6 +42,12 @@ class ResultEntryManager extends Component
             ->with(['patient.patientProfile', 'items.labTest', 'testReport.results'])
             ->findOrFail($id);
 
+        // Ensure all tests are always Completed
+        $this->invoice->items()->where(function ($q) {
+            $q->whereNull('status')->orWhere('status', '!=', 'Completed');
+        })->update(['status' => 'Completed']);
+        $this->invoice->load('items');
+
         $this->testReport = $this->invoice->testReport;
         $this->comments = $this->testReport ? $this->testReport->comments : '';
 
@@ -176,6 +182,18 @@ class ResultEntryManager extends Component
         }
 
         $this->detectManualOverrides();
+
+        // All tests selected by default
+        $this->selectedTests = [];
+        foreach ($this->invoice->items as $item) {
+            $this->selectedTests[] = (string) $item->id;
+            if ($item->labTest && $item->labTest->is_package && !empty($item->labTest->linked_test_ids)) {
+                foreach ($item->labTest->linked_test_ids as $ltId) {
+                    $this->selectedTests[] = $item->id . '_' . $ltId;
+                }
+            }
+        }
+        $this->selectedTests = array_values(array_unique($this->selectedTests));
     }
 
     private function findMatchingRange($param, $patientGender, $days, $months, $years)
@@ -424,7 +442,13 @@ class ResultEntryManager extends Component
     {
         $this->authorize('edit reports');
 
-        // Validation: Block approval if any results are missing or tests are not marked completed
+        // Always ensure all tests are marked as Completed
+        $this->invoice->items()->where(function ($q) {
+            $q->whereNull('status')->orWhere('status', '!=', 'Completed');
+        })->update(['status' => 'Completed']);
+        $this->invoice->load('items');
+
+        // Validation: Block approval if any results are missing
         if ($status === 'Approved') {
             $items = $this->invoice->items;
             // Only check items that are actually tests (have lab_test_id)
@@ -582,52 +606,16 @@ class ResultEntryManager extends Component
     {
         $this->authorize('edit reports');
         $item = \App\Models\InvoiceItem::findOrFail($itemId);
-        $newStatus = $item->status === 'Completed' ? 'Pending' : 'Completed';
-
-        if ($newStatus === 'Completed') {
-            $dlcCodes = ['NEU', 'LYM', 'MONO', 'EOS', 'BASO'];
-            $sum = 0;
-            $hasDlc = false;
-
-            foreach ($this->parametersList as $k => $p) {
-                if (($p['invoice_item_id'] ?? null) == $itemId) {
-                    $code = strtoupper($p['short_code'] ?? '');
-                    if (in_array($code, $dlcCodes)) {
-                        $hasDlc = true;
-                        $sum += (float) ($this->results[$k] ?: 0);
-                    }
-                }
-            }
-
-            if ($hasDlc && abs($sum - 100) > 0.01) {
-                $msg = 'Cannot mark test as complete. The sum of DLC parameters must be exactly 100% (Current sum: '.round($sum, 2).'%).';
-                $this->dispatch('notify', ['type' => 'error', 'message' => $msg]);
-                session()->flash('error', $msg);
-
-                return;
-            }
-        }
-
-        $item->update(['status' => $newStatus]);
-
-        // Refresh invoice to get updated status
+        $item->update(['status' => 'Completed']);
         $this->invoice->load('items');
-
-        $msg = "Test status updated to {$newStatus}.";
-        session()->flash('success', $msg);
-        $this->dispatch('notify', ['type' => 'success', 'message' => $msg]);
     }
 
     public function printSelected($withHeader = 1)
     {
         if (empty($this->selectedTests)) {
-            $this->dispatch('notify', ['type' => 'error', 'message' => 'Please select at least one test to print.']);
-            session()->flash('error', 'Please select at least one test to print.');
-
-            return;
+            $this->selectedTests = $this->invoice->items->pluck('id')->map(fn($id) => (string)$id)->toArray();
         }
 
-        // Printing proceeds regardless of image presence to allow for physical letterhead space
         $testIds = is_array($this->selectedTests) ? implode(',', $this->selectedTests) : $this->selectedTests;
         $url = route('lab.reports.print', ['id' => $this->invoice->id, 'template' => 'new'])
             .'?tests='.$testIds
