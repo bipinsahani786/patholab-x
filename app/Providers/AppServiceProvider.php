@@ -38,9 +38,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole('super_admin') ? true : null;
         });
 
-        if (env('APP_ENV') === 'production') {
-            URL::forceScheme('https');
-        }
+        // if (env('APP_ENV') === 'production') {
+        //     URL::forceScheme('https');
+        // }
     }
 
     /**

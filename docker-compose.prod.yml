@@ -57,9 +57,6 @@ services:
     networks:
       - pathology-network
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
     image: pathology-app-prod
     container_name: pathology_scheduler
     restart: always
