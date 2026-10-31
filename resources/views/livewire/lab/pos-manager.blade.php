@@ -203,15 +203,34 @@
 
     {{-- ======================== PAGE HEADER ======================== --}}
     <div class="page-header mb-3">
-        <div class="page-header-left d-flex align-items-center">
-            <div class="page-header-title">
-                <h5 class="m-b-10 fw-bold">Point of Sale — Billing</h5>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10 fw-bold">Point of Sale — Billing</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item">Lab</li>
+                    <li class="breadcrumb-item active">POS</li>
+                </ul>
             </div>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                <li class="breadcrumb-item">Lab</li>
-                <li class="breadcrumb-item active">POS</li>
-            </ul>
+            <div class="page-header-right d-flex align-items-center gap-2">
+                @if($active_membership)
+                    <div class="d-flex align-items-center gap-2 px-3 py-1 rounded-3 fs-12 fw-bold" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                        <i class="feather-award fs-14"></i>
+                        <span>{{ $active_membership['name'] }} ACTIVE ({{ number_format($active_membership['discount_percentage'] ?? 0, 0) }}% OFF)</span>
+                    </div>
+                @else
+                    <button type="button" wire:click="$set('isMembershipModalOpen', true)" 
+                        class="btn d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-uppercase fs-11 shadow-sm"
+                        style="border: 1.5px solid #f59e0b; color: #f59e0b; border-radius: 8px; letter-spacing: 0.5px; background: #ffffff; transition: all 0.2s;"
+                        onmouseover="this.style.background='#fffbeb'; this.style.borderColor='#d97706'; this.style.color='#d97706';"
+                        onmouseout="this.style.background='#ffffff'; this.style.borderColor='#f59e0b'; this.style.color='#f59e0b';">
+                        <i class="feather-award fs-14"></i>
+                        <span>BUY MEMBERSHIP</span>
+                    </button>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -279,10 +298,6 @@
                                             @if($active_membership)
                                                 <div class="mt-1">
                                                     <span class="badge bg-success fs-10"><i class="feather-award me-1"></i>{{ $active_membership['name'] ?? '' }} ({{ number_format($active_membership['discount_percentage'] ?? 0, 0) }}% OFF)</span>
-                                                </div>
-                                            @else
-                                                <div class="mt-1">
-                                                    <button wire:click="$set('isMembershipModalOpen', true)" class="btn btn-xs btn-outline-warning py-0 px-2 fs-10 fw-bold"><i class="feather-award me-1"></i>Buy Membership</button>
                                                 </div>
                                             @endif
                                         </div>
@@ -774,10 +789,30 @@
                                     <i class="feather-check-circle me-1"></i>Voucher applied (-₹{{ number_format($voucher_discount_amt, 0) }})
                                 </div>
                             @endif
+                        </div>
+
+                        {{-- Membership / Loyalty Plan --}}
+                        <div class="mb-3">
                             @if($active_membership)
-                                <div class="mt-1 text-info fs-11 fw-bold">
-                                    <i class="feather-award me-1"></i>{{ $active_membership['name'] }} applied (-₹{{ number_format($membership_discount_amt, 0) }})
+                                <div class="p-2 rounded-2 d-flex align-items-center justify-content-between" style="background: #ecfdf5; border: 1px solid #a7f3d0;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="feather-award text-success fs-15"></i>
+                                        <div>
+                                            <div class="fw-bold fs-11 text-success">{{ $active_membership['name'] }} Applied</div>
+                                            <div class="text-muted fs-10">-₹{{ number_format($membership_discount_amt, 0) }} ({{ number_format($active_membership['discount_percentage'] ?? 0, 0) }}% OFF)</div>
+                                        </div>
+                                    </div>
+                                    <button wire:click="$set('isMembershipModalOpen', true)" class="btn btn-xs btn-outline-success py-0 px-2 fs-10 fw-bold">Change</button>
                                 </div>
+                            @else
+                                <button type="button" wire:click="$set('isMembershipModalOpen', true)" 
+                                    class="btn w-100 d-flex align-items-center justify-content-center gap-2 py-2 fw-bold text-uppercase fs-11"
+                                    style="border: 1.5px solid #f59e0b; color: #f59e0b; border-radius: 6px; letter-spacing: 0.5px; background: #ffffff; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#fffbeb'; this.style.borderColor='#d97706'; this.style.color='#d97706';"
+                                    onmouseout="this.style.background='#ffffff'; this.style.borderColor='#f59e0b'; this.style.color='#f59e0b';">
+                                    <i class="feather-award fs-14"></i>
+                                    <span>BUY MEMBERSHIP</span>
+                                </button>
                             @endif
                         </div>
 
@@ -1018,6 +1053,12 @@
                     </div>
                     <div class="modal-body">
                         @if($modalError)<div class="alert alert-danger py-2 fs-12 mb-3"><i class="feather-alert-circle me-1"></i>{{ $modalError }}</div>@endif
+                        @if(!$selectedPatient)
+                            <div class="alert alert-warning py-2 px-3 fs-12 mb-3 d-flex align-items-center gap-2">
+                                <i class="feather-alert-triangle fs-15 text-warning flex-shrink-0"></i>
+                                <span>Please search and select a <strong>Patient</strong> on the bill before activating a membership plan.</span>
+                            </div>
+                        @endif
                         <div class="row g-3">
                             @forelse ($memberships as $mem)
                                 <div class="col-md-4 col-sm-6">
@@ -1055,7 +1096,7 @@
                     </div>
                     <div class="modal-footer">
                         <button wire:click="$set('isMembershipModalOpen', false)" class="btn btn-light btn-sm">Cancel</button>
-                        <button wire:click="purchaseMembership" class="btn btn-primary btn-sm fw-bold" {{ !$selectedMembershipId ? 'disabled' : '' }}><i class="feather-check me-1"></i>Activate & Apply</button>
+                        <button wire:click="purchaseMembership" class="btn btn-primary btn-sm fw-bold" {{ (!$selectedMembershipId || !$selectedPatient) ? 'disabled' : '' }}><i class="feather-check me-1"></i>Activate & Apply</button>
                     </div>
                 </div>
             </div>
